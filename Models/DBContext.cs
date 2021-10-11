@@ -19,7 +19,6 @@ namespace ShoppingCart.Models
 
         public DbSet<User> Users { get; set; }
 
-        public DbSet<Cart> Cart { get; set; }
-
+        public DbSet<Purchase> Purchases { get; set; }
     }
 }

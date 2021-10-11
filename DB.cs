@@ -35,7 +35,7 @@ namespace ShoppingCart
 
             var activationKey = Guid.NewGuid().ToString();
 
-            List<Item> item = dbContext.Items.Where(x => x.ActivationKey == x.ActivationKey).ToList();
+            List<Purchase> item = dbContext.Purchases.Where(x => x.ActivationKey == x.ActivationKey).ToList();
             IEnumerable<string> iter =
                 from i in item
                 select i.ActivationKey;

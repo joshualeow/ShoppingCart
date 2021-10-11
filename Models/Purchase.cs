@@ -22,5 +22,7 @@ namespace ShoppingCart.Models
         [Required]
         public string ActivationKey { get; set; }
         //public int stockleft { get; set; }
+
+
     }
 }
