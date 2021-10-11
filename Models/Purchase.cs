@@ -19,31 +19,8 @@ namespace ShoppingCart.Models
 
         public int Quantity { get; set; }
 
-        [Required]
-        public string ActivationKey { get; set; }
+        public ICollection<PurchasedItem> PurchasedItems { get; set; }
         //public int stockleft { get; set; }
-        private string CreateActivationKey()
-        {
 
-            var activationKey = Guid.NewGuid().ToString();
-
-            List<Purchase> item = dbContext.Purchases.Where(x => x.ActivationKey == x.ActivationKey).ToList();
-            IEnumerable<string> iter =
-                from i in item
-                select i.ActivationKey;
-
-            List<string> keylist = iter.ToList();
-
-            var exists = keylist.Any(key => key == activationKey);
-
-
-            if (exists)
-            {
-                activationKey = CreateActivationKey();
-            }
-
-            return activationKey;
-
-        }
     }
 }
