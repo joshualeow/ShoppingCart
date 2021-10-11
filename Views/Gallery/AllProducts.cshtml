@@ -1,0 +1,38 @@
+﻿
+@{
+    ViewData["Title"] = "Gallery";
+    string searchStr = (string)ViewData["searchStr"];
+
+    List<ShoppingCart.Models.Item> items = (List<ShoppingCart.Models.Item>)ViewData["items"];
+}
+
+@section Scripts {
+    <script src="~\js\Gallery\Gallery.js"></script>
+}
+
+<form action="/Search/" method="POST">
+    <!--The search form in html-->
+    Search: <input name="searchStr" value="@searchStr" />
+</form>
+
+<div id="select_count_box" style="display:none">
+    <a id="select_count_url" href="#">
+        <!--id Accessed by AllTasks.js-->
+        <div id="select_count" style="display:inline"></div>
+    </a>
+</div>
+
+
+
+        <div style="text-align:center">
+            <div class="item_list" style="display:inline-block">
+                @foreach (ShoppingCart.Models.Item item in items)
+                {
+                    <div id=@item.Name class="a_item">
+                        <!--class Accessed by AllTasks.js in OnReserveTask, This is clickable-->
+                        <div>@item.Description</div>
+                    </div>
+                }
+            </div>
+        </div>
+
