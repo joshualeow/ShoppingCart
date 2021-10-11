@@ -6,6 +6,7 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
+using ShoppingCart.Models;
 
 namespace ShoppingCart
 {
@@ -18,41 +19,6 @@ namespace ShoppingCart
             this.dbContext = dbContext;
         }
 
-
-        //private List<string> GetActivationKeys()
-        //{
-        //    List<Item> item = dbContext.Items.Where(x => x.ActivationKey.Count() == 1).ToList();
-        //    IEnumerable<string> iter =
-        //        from i in item
-        //        select i.ActivationKey;
-
-        //    List<string> keylist = iter.ToList();
-
-        //    return keylist;
-        //}
-        private string CreateActivationKey()
-        {
-
-            var activationKey = Guid.NewGuid().ToString();
-
-            List<Purchase> item = dbContext.Purchases.Where(x => x.ActivationKey == x.ActivationKey).ToList();
-            IEnumerable<string> iter =
-                from i in item
-                select i.ActivationKey;
-
-            List<string> keylist = iter.ToList();
-
-            var exists = keylist.Any(key => key == activationKey);
-
-
-            if (exists)
-            {
-                activationKey = CreateActivationKey();
-            }
-
-            return activationKey;
-
-        }
 
         public void Seed()
         {
