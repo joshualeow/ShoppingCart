@@ -18,10 +18,8 @@ namespace ShoppingCart.Controllers
 
         public IActionResult AllProducts(string searchStr)
         {
-
-
             Session session = GetSession();
-            if(session == null)
+            if (session == null)
             {
                 return RedirectToAction("Index", "Logout");
             }
@@ -36,10 +34,10 @@ namespace ShoppingCart.Controllers
 
             //ViewData["searchStr"] = searchStr;
             //ViewData["items"] = items;
+
             ViewData["items"] = items;
 
             return View();
-
         }
 
         private Session GetSession()
