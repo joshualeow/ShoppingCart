@@ -13,18 +13,15 @@ namespace ShoppingCart.Models
             id = new Guid();
             Purchases = new List<Purchase>();
         }
-
+        [Key]
         public Guid id { get; set; }
 
         [Required]
         public string Username { get; set; }
 
         [Required]
-
         public byte[] PassHash { get; set; }
 
         public virtual ICollection<Purchase> Purchases { get; set; }
-
-       
     }
 }

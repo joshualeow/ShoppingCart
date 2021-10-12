@@ -17,7 +17,6 @@ namespace ShoppingCart.Models
 
         public long Timestamp { get; set; }
 
-        public virtual Guid UserId { get; set; }
         public virtual User User { get; set; }
     }
 }

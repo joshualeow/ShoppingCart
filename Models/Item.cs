@@ -14,12 +14,13 @@ namespace ShoppingCart.Models
             Id = new Guid();
         }
 
+        [Key]
         public Guid Id { get; set; }
 
         [Required]
         [MaxLength(50)]
         public string Name { get; set; }
-
+        [Required]
         public float Price { get; set; }
 
         [Required]
@@ -32,6 +33,5 @@ namespace ShoppingCart.Models
         [MaxLength(50)]
         public string ImageUrl { get; set; }
 
-        public virtual User User { get; set; }
     }
 }
