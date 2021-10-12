@@ -25,7 +25,7 @@ namespace ShoppingCart.Controllers
             { //Check for cookies straight away, if there is existing
                 Guid sessionId = Guid.Parse(Request.Cookies["sessionId"]); //request from cookies
                 Session session = dbContext.Sessions.FirstOrDefault(x =>
-                    x.Id == sessionId //calidate against database, If cannot find 
+                    x.Id == sessionId //calidate against database, If cannot find
                 );
 
                 if (session == null)
@@ -41,6 +41,7 @@ namespace ShoppingCart.Controllers
             // no Session ID; show Login page
             return View();
         }
+
         public IActionResult Login(IFormCollection form) //IFormCollection is imported from AspNetCore.Http
         {
             string username = form["username"];
@@ -49,15 +50,16 @@ namespace ShoppingCart.Controllers
             HashAlgorithm sha = SHA256.Create();
             byte[] hash = sha.ComputeHash(Encoding.UTF8.GetBytes(username + password));
 
-            User user = dbContext.Users.FirstOrDefault(x => 
-                x.Username == username && 
+            User user = dbContext.Users.FirstOrDefault(x =>
+                x.Username == username &&
                 x.PassHash == hash
             );
             //Cart cart = dbContext.Cart.FirstOrDefault(x => x.Quantity > 0);
 
-            if(user == null)
+            if (user == null)
             {
-                return RedirectToAction("Index", "Login");
+                ViewBag.ErrorMessage = "wrong";
+                return RedirectToAction("Login", "Login");
             }
 
             Session session = new Session()

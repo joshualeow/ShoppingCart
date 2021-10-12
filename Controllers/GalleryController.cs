@@ -25,6 +25,7 @@ namespace ShoppingCart.Controllers
             }
 
             List<ShoppingCart.Models.Item> items = dbContext.Items.ToList();
+
             //if(searchStr == null)
             //{
             //    searchStr = "";
