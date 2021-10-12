@@ -13,14 +13,13 @@ namespace ShoppingCart.Models
             Id = new Guid();
         }
 
-        public Guid Id { get; set;}
+        public Guid Id { get; set; }
 
         public DateTime PurchaseDate { get; set; }
 
         public int Quantity { get; set; }
 
-        public ICollection<PurchasedItem> PurchasedItems { get; set; }
+        public virtual ICollection<PurchasedItem> PurchasedItems { get; set; }
         //public int stockleft { get; set; }
-
     }
 }

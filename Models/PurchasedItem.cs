@@ -25,8 +25,6 @@ namespace ShoppingCart.Models
         [MaxLength(50)]
         public string Category { get; set; }
 
-
-
         [MaxLength(256)]
         public string Description { get; set; }
 
