@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace ShoppingCart.Controllers
 {
-    public class LoginController : Controller
+    public class LoginController : Controller //From 
     {
         private DBContext dbContext;
 
