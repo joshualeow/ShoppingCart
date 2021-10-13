@@ -11,24 +11,16 @@ namespace ShoppingCart.Models
         public PurchasedItem()
         {
             Id = new Guid();
+            ActivationKey = Guid.NewGuid().ToString();
         }
-
+        [Key]
         public Guid Id { get; set; }
 
         [Required]
-        [MaxLength(50)]
-        public string Name { get; set; }
-
-        public float Price { get; set; }
-
-        [Required]
-        [MaxLength(50)]
-        public string Category { get; set; }
-
-        [MaxLength(256)]
-        public string Description { get; set; }
-
-        [Required]
         public string ActivationKey { get; set; }
+        [Required]
+        public virtual Guid ItemId { get; set; }
+        [Required]
+        public virtual Guid PurchaseId { get; set; }
     }
 }

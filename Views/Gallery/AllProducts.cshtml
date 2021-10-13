@@ -3,6 +3,7 @@
     string searchStr = (string)ViewData["searchStr"];
 
     List<ShoppingCart.Models.Item> items = (List<ShoppingCart.Models.Item>)ViewData["items"];
+
 }
 <style>
     .my_list {
@@ -28,6 +29,7 @@
         <input name="searchStr" value="@searchStr" class="form-control" placeholder="Search" />
     </div>
 </form>
+
 <div id="myCarousel" class="carousel slide">
     <!-- Carousel-->
     <ol class="carousel-indicators">
