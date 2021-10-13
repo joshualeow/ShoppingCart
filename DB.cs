@@ -219,7 +219,7 @@ namespace ShoppingCart
 
             var exists = keylist.Any(key => key == activationKey);
 
-            if (exists)
+            if (exists) //If there is a same one
             {
                 activationKey = CreateActivationKey();
             }
