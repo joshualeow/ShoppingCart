@@ -2,6 +2,10 @@
     string flag = (string)TempData["Validation"];
 }
 
+@section Scripts {
+    <script src="~/js/Login/Login.js"></script>
+}
+
 <link rel="stylesheet" href="~/css/Login.css" />
 <form name="loginForm" action="/Login/Login" onsubmit="return validateForm()" method="POST">
     <div class="container-fluid px-1 px-md-5 px-lg-1 px-xl-5 py-5 mx-auto">
@@ -60,21 +64,3 @@
         </div>
     </div>
 </form>
-
-<script>
-    function validateForm() {
-        var x = document.forms["loginForm"]["username"].value;
-        var y = document.forms["loginForm"]["password"].value;
-        var flag = false;
-        if ((x == null || x == "") && (y == null || y == "")) {
-            alert("Username and password cannot be empty at the same time");
-        } else if (x == null || x == "") {
-            alert("Username can not be empty");
-        } else if (y == null || y == "") {
-            alert("Password can not be empty");
-        } else {
-            flag = true;
-        }
-        return flag;
-    }
-</script>
