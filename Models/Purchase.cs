@@ -12,7 +12,7 @@ namespace ShoppingCart.Models
         {
             Id = new Guid();
         }
-        [Key]
+        //[Key]
         public Guid Id { get; set; }
         [Required]
         public DateTime PurchaseDate { get; set; }

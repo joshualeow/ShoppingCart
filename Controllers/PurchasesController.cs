@@ -26,7 +26,13 @@ namespace ShoppingCart.Controllers
                 List<ShoppingCart.Models.Item> items = dbContext.Items.ToList();
                 ViewData["items"] = items;
 
-                return View();
+            List<ShoppingCart.Models.PurchasedItem> pitemslist = dbContext.PurchasedItems.ToList();
+            
+            
+
+
+
+            return View();
             }
 
             private Session GetSession()
@@ -43,6 +49,26 @@ namespace ShoppingCart.Controllers
                 );
 
                 return session;//to use user information
+            }
+
+            private string GetPurchaseId([FromBody] Purchase purchase)
+            {
+                string purid = purchase.Id.ToString();
+                List<PurchasedItem> itemslist = dbContext.PurchasedItems.ToList();
+                IEnumerable<string> pur = 
+                    from i in itemslist
+                    select i.PurchaseId.ToString();
+
+                List<string> idlist = pur.ToList();
+                var returns = pur.Any(id => id == purid);
+                if (returns)
+                {
+                    string purID = purid;
+                    return purID;
+                }
+                return purid;
+            //Purchase purchase = dbContext.PurchasedItems.FirstOrDefault(x => x.Id == pur);
+
             }
     }
 }
