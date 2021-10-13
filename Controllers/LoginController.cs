@@ -38,6 +38,9 @@ namespace ShoppingCart.Controllers
                 return RedirectToAction("AllProducts", "Gallery"); //Action method and controller
             }
 
+            //Flag for Login Validation
+            TempData["Validation"] = (string)TempData["Login"];
+
             // no Session ID; show Login page
             return View();
         }
@@ -58,8 +61,8 @@ namespace ShoppingCart.Controllers
 
             if (user == null)
             {
-                ViewBag.ErrorMessage = "wrong";
-                return RedirectToAction("Login", "Login");
+                TempData["Login"] = "Invalid";
+                return RedirectToAction("LoginIndex", "Login");
             }
 
             Session session = new Session()
