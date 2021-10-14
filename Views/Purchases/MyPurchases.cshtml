@@ -1,0 +1,52 @@
+﻿@{
+    var query = (IEnumerable)ViewData["query"];
+}
+
+@{
+    if (query.Count() > 0)
+    {
+        foreach(var obj in query)
+        {
+            <div class="purchase-grid">
+            string PurchaseDate = obj.PurchaseDate.ToShortDateString();
+            List<Guid> uniqueItems = obj.Select(x => x.ItemID).Distinct().ToList();
+            foreach(Guid id in uniqueItems)
+            {
+                var Item = obj.Where(x => x.ItemID == id).ToList();
+                string imgURL = Item.FirstOrDefault().ImageURL;
+                string Name = Item.FirstOrDefault().Name;
+                string Description = Item.FirstOrDefault().Description;
+                int Quantity = Item.Count();
+                <div class="item-info-left">
+                    <div class="image-box">
+                    <img src=@imgURL/>
+                    </div>
+                    <div class= "item-name">
+                    @Name
+                    </div>
+                    <div class="item-description">
+                    @Description
+                    </div>
+                    <input type="button" value="Download"/>
+                </div>
+                // if there are multiple activation codes, display combo box
+                // otherwise, plain old text
+                <div class="item-info-right">
+                    <p>Purchased On: @PurchaseDate</p>
+                    <p>Quantity: @Quantity</p>
+                    <p>Activation Code:
+                    if (Quantity > 1)
+                        <select>
+                            foreach(var key in Item.Select(x => x.ActivationKey))
+                                <option value="@key">@key</option>
+                        </select>
+                    else
+                        @Item.Select(x => x.ActivationKey).ToString()
+                    </p>
+                </div>
+            }
+            </div>
+        }
+    }
+}
+
