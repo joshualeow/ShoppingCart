@@ -22,6 +22,105 @@ namespace ShoppingCart
         {
             SeedItems();
             SeedUsersTable();
+            SeedPurchaseTables();
+        }
+
+        public void SeedPurchaseTables()
+        {
+            User cust1 = dbContext.Users.FirstOrDefault(x => x.Username == "john");
+            Purchase p1 = new Purchase
+            {
+                PurchaseDate = new DateTime(2021, 10, 1),
+                Customerid = cust1.id,
+            };
+            PurchasedItem pItem1 = new PurchasedItem
+            {
+                ItemId = dbContext.Items.FirstOrDefault(x => x.Name == ".NET Charts").Id,
+                PurchaseId = p1.Id
+            };
+            p1.PurchasedItems.Add(pItem1);
+            PurchasedItem pItem2 = new PurchasedItem
+            {
+                ItemId = dbContext.Items.FirstOrDefault(x => x.Name == ".NET Blazor").Id,
+                PurchaseId = p1.Id
+            };
+            p1.PurchasedItems.Add(pItem2);
+            cust1.Purchases.Add(p1);
+            dbContext.Purchases.Add(p1);
+            dbContext.PurchasedItems.Add(pItem1);
+            dbContext.PurchasedItems.Add(pItem2);
+            Purchase p2 = new Purchase
+            {
+                PurchaseDate = new DateTime(2020, 12, 25),
+                Customerid = cust1.id,
+            };
+            PurchasedItem pItem3 = new PurchasedItem
+            {
+                ItemId = dbContext.Items.FirstOrDefault(x => x.Name == ".NET Charts").Id,
+                PurchaseId = p2.Id
+            };
+            PurchasedItem pItem4 = new PurchasedItem
+            {
+                ItemId = dbContext.Items.FirstOrDefault(x => x.Name == ".NET Charts").Id,
+                PurchaseId = p2.Id
+            };
+            PurchasedItem pItem5 = new PurchasedItem
+            {
+                ItemId = dbContext.Items.FirstOrDefault(x => x.Name == ".NET Charts").Id,
+                PurchaseId = p2.Id
+            };
+            p2.PurchasedItems.Add(pItem3);
+            p2.PurchasedItems.Add(pItem4);
+            p2.PurchasedItems.Add(pItem5);
+            cust1.Purchases.Add(p2);
+            dbContext.Purchases.Add(p2);
+            dbContext.PurchasedItems.Add(pItem3);
+            dbContext.PurchasedItems.Add(pItem4);
+            dbContext.PurchasedItems.Add(pItem5);
+            Purchase p3 = new Purchase
+            {
+                PurchaseDate = new DateTime(2021, 5, 17),
+                Customerid = cust1.id,
+            };
+            PurchasedItem pItem6 = new PurchasedItem
+            {
+                ItemId = dbContext.Items.FirstOrDefault(x => x.Name == ".NET Paypal").Id,
+                PurchaseId = p3.Id
+            };
+            p3.PurchasedItems.Add(pItem6);
+            cust1.Purchases.Add(p3);
+            dbContext.Purchases.Add(p3);
+            dbContext.PurchasedItems.Add(pItem6);
+            User cust2 = dbContext.Users.FirstOrDefault(x => x.Username == "jean");
+            Purchase p4 = new Purchase
+            {
+                PurchaseDate = new DateTime(2021, 6, 4),
+                Customerid = cust2.id,
+            };
+            PurchasedItem pItem7 = new PurchasedItem
+            {
+                ItemId = dbContext.Items.FirstOrDefault(x => x.Name == ".NET Logger").Id,
+                PurchaseId = p4.Id
+            };
+            p4.PurchasedItems.Add(pItem7);
+            cust2.Purchases.Add(p4);
+            dbContext.Purchases.Add(p4);
+            dbContext.PurchasedItems.Add(pItem7);
+            Purchase p5 = new Purchase
+            {
+                PurchaseDate = new DateTime(2020, 7, 18),
+                Customerid = cust2.id,
+            };
+            PurchasedItem pItem8 = new PurchasedItem
+            {
+                ItemId = dbContext.Items.FirstOrDefault(x => x.Name == ".NET Analytics").Id,
+                PurchaseId = p5.Id
+            };
+            p5.PurchasedItems.Add(pItem8);
+            cust2.Purchases.Add(p5);
+            dbContext.Purchases.Add(p5);
+            dbContext.PurchasedItems.Add(pItem8);
+            dbContext.SaveChanges();
         }
 
         public void SeedItems()
@@ -206,25 +305,25 @@ namespace ShoppingCart
             dbContext.SaveChanges();
         }
 
-        private string CreateActivationKey()
-        {
-            var activationKey = Guid.NewGuid().ToString();
+        //private string CreateActivationKey()
+        //{
+        //    var activationKey = Guid.NewGuid().ToString();
 
-            List<PurchasedItem> item = dbContext.PurchasedItems.Where(x => x.ActivationKey == x.ActivationKey).ToList();
-            IEnumerable<string> iter =
-                from i in item
-                select i.ActivationKey;
+        //    List<PurchasedItem> item = dbContext.PurchasedItems.Where(x => x.ActivationKey == x.ActivationKey).ToList();
+        //    IEnumerable<string> iter =
+        //        from i in item
+        //        select i.ActivationKey;
 
-            List<string> keylist = iter.ToList();
+        //    List<string> keylist = iter.ToList();
 
-            var exists = keylist.Any(key => key == activationKey);
+        //    var exists = keylist.Any(key => key == activationKey);
 
-            if (exists) //If there is a same one
-            {
-                activationKey = CreateActivationKey();
-            }
+        //    if (exists) //If there is a same one
+        //    {
+        //        activationKey = CreateActivationKey();
+        //    }
 
-            return activationKey;
-        }
+        //    return activationKey;
+        //}
     }
 }

@@ -62,8 +62,8 @@ namespace ShoppingCart
                     pattern: "{controller=Login}/{action=LoginIndex}/{id?}");
             });
 
-
-
+            if (dbContext.Database.CanConnect())
+                dbContext.Database.EnsureDeleted();
             if (!dbContext.Database.CanConnect())
             {
                 dbContext.Database.EnsureCreated();
