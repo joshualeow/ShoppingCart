@@ -1,0 +1,77 @@
+﻿@{
+    ViewData["Title"] = "Search";
+    string searchStr = (string)ViewData["searchStr"];
+
+    List<Item> items = (List<Item>)ViewData["items"];
+}
+<style>
+    .my_list {
+        text-align: center;
+        border: 1px solid #000000;
+        padding: 5px;
+        margin-bottom: 10px;
+        background-color: whitesmoke;
+        display: inline-block;
+        width: 300px;
+        margin-left: 50px;
+        height: fit-content;
+    }
+</style>
+
+@section Scripts {
+    <script src="~\js\Gallery\Gallery.js"></script>
+    <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.10.0.min.js" type="text/javascript"></script>
+    <script src="https://ajax.aspnetcdn.com/ajax/jquery.ui/1.9.2/jquery-ui.min.js" type="text/javascript"></script>
+    <link href="https://ajax.aspnetcdn.com/ajax/jquery.ui/1.9.2/themes/blitzer/jquery-ui.css" rel="Stylesheet" type="text/css" />
+
+    <script type="text/javascript">
+        $(function () {
+            $("#search").autocomplete({
+                source: function (request, response) {
+                    $.ajax({
+                        url: '/Gallery/AutoComplete/',
+                        data: { "searchTerm": request.term },
+                        type: "POST",
+                        success: function (data) {
+                            response($.map(data, function (item) {
+                                return item;
+                            }))
+                        },
+                    });
+                },
+                minLength: 1
+            });
+        });
+    </script>
+}
+
+
+<form action="/Gallery/Search" method="POST">
+    <!--The search form in html-->
+    <div>
+        <input id="search" name="searchStr" value="@searchStr" class="form-control" placeholder="Search" />
+
+    </div>
+</form>
+
+<p></p>
+
+@if (items.Count == 0)
+{
+    @:There are no matches.
+}
+else
+{
+    <div class="row" style="width:1110px ;margin-left:1px">
+
+        @foreach (Item item in items)
+        {
+            <div class="my_list">
+                <img src="@item.ImageUrl" width="200" height="120" />
+                <h3>@item.Name</h3>
+                <p>@item.Description</p>
+                <button type="button" class="btn btn-warning">$@item.Price - Add to Cart </button>
+            </div>
+        }
+    </div>
+}

@@ -25,7 +25,6 @@ namespace ShoppingCart.Controllers
             }
 
             List<ShoppingCart.Models.Item> items = dbContext.Items.ToList();
-
             //if(searchStr == null)
             //{
             //    searchStr = "";
@@ -39,6 +38,37 @@ namespace ShoppingCart.Controllers
             ViewData["items"] = items;
 
             return View();
+        }
+
+        public IActionResult Search(string searchStr)
+        {
+            if (searchStr == null)
+            {
+                searchStr = "";
+                return RedirectToAction("AllProducts");
+            }
+
+            List<Item> items = dbContext.Items.Where(x =>
+                x.Name.Contains(searchStr) ||
+                x.Description.Contains(searchStr)
+            ).ToList();
+
+            ViewData["searchStr"] = searchStr;
+            ViewData["items"] = items;
+            return View();
+        }
+
+        public JsonResult AutoComplete(string searchterm)
+        {
+            var products = (from items in dbContext.Items
+                            where items.Name.Contains(searchterm)
+                            select new
+                            {
+                                label = items.Name,
+                                val = items.Id
+                            }).ToList();
+
+            return Json(products);
         }
 
         private Session GetSession()
