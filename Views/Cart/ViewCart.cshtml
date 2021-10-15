@@ -1,0 +1,102 @@
+﻿@{
+    ViewData["Title"] = "View Cart Page";
+    Cart cart = (Cart)ViewData["cart"];
+    //DBContext db = (DBContext)ViewData["DataBase"];
+}
+
+<style>
+    header {
+        display: none
+    }
+
+    footer {
+        display: none
+    }
+
+    #hidden {
+        display: none
+    }
+</style>
+
+
+@section Scripts{
+    <script type="text/javascript">
+        window.onload = function () {
+            let nav = document.getElementsByClassName("navbar");
+            for (let i = 0; i < nav.length; i++) {
+                nav[i].style.display = "none";
+            }
+            let num = document.getElementById("hidden").innerHTML;
+            for (let i = 0; i < num; i++) {
+                let elem_add = document.getElementById("add_" + i);
+                let elem_minus = document.getElementById("minus_" + i);
+
+                elem_add.onclick = function () {
+                    let n = document.getElementById("name_"+i).innerHTML;
+                    let
+
+                    let xhr = XMLHttpRequest();
+                    xhr.open("POST", "/Cart/AdjustNum");
+                    xhr.setRequestHeader("Content-Type", "application/json; Charser=utf8");
+
+                    xhr.onreadystatechange = function () {
+
+                    }
+
+                    let data = {
+
+                    }
+
+                }
+
+                elem_minus.onclick = function () {
+
+                }
+
+            }
+
+        }
+
+
+    </script>
+}
+
+
+@if (cart.CartItemCategories == null || cart.CartItemCategories.Count == 0)
+{
+    <h1>CART is EMPTY</h1>
+}
+else
+{
+    <div>
+        <h2>View Cart</h2>
+        <form id="continue" action="/Gallery/AllProducts" method="POST">
+            <input type="submit" value="Continue Shopping" />
+        </form>
+        <form id="checkout" action="/Cart/CheckOut" method="POST">
+            <input type="submit" value="Checkout" />
+        </form>
+    </div>
+
+    <div class="row" style="width:1110px ;margin-left:1px">
+
+        <div id="hidden">@cart.CartItemCategories.Count</div>
+
+        @foreach (CartItemCategory ctgy in cart.CartItemCategories)
+        {
+            Item item = ctgy.Item;
+            int i = 0;
+            <div class="my_list">
+                <img src="@item.ImageUrl" width="200" height="120" />
+                <h3 id="name_@i">@item.Name</h3>
+                <p>@item.Description</p>
+            </div>
+            <div>
+                Quantity:<h5 id="num_@i">@ctgy.NumberOfItem </h5>
+                <button id="add_@i">ADD</button>  <button id="minus_@i">MINUS</button>
+            </div>
+            <br /> <hr /> <br />
+            i++;
+        }
+    </div>
+}

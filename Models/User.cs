@@ -10,11 +10,11 @@ namespace ShoppingCart.Models
     {
         public User()
         {
-            id = new Guid();
+            Id = new Guid();
             Purchases = new List<Purchase>();
         }
         [Key]
-        public Guid id { get; set; }
+        public Guid Id { get; set; }
 
         [Required]
         public string Username { get; set; }
