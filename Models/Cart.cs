@@ -6,22 +6,15 @@ using System.Threading.Tasks;
 
 namespace ShoppingCart.Models
 {
-    public class User
+    public class Cart
     {
-        public User()
+        public Cart()
         {
             Id = new Guid();
-            Purchases = new List<Purchase>();
         }
         [Key]
         public Guid Id { get; set; }
-
-        [Required]
-        public string Username { get; set; }
-
-        [Required]
-        public byte[] PassHash { get; set; }
-
-        public virtual ICollection<Purchase> Purchases { get; set; }
+        public virtual User User { get; set; }
+        public virtual ICollection<CartItemCategory> CartItemCategories { get; set; }
     }
 }
