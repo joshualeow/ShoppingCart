@@ -23,7 +23,7 @@ namespace ShoppingCart.Controllers
             // item data from Items table,
             // Activation Key from PurchaseItems, and PurchaseDate from Purchases
             var purchaseList = dbContext.Purchases
-                .Where(x => x.Userid == session.User.id)
+                .Where(x => x.Userid == session.User.Id)
                 .OrderByDescending(x => x.PurchaseDate)
                 .ToList();
             var purchasedItems = new Dictionary<Purchase, List<PurchasedItem>>();
@@ -35,7 +35,9 @@ namespace ShoppingCart.Controllers
                     .ToList();
                 purchasedItems.Add(purchase, pItemList);
                 foreach (Guid ItemID in pItemList.Select(x => x.ItemId).Distinct())
-                    ItemList.Add(dbContext.Items.FirstOrDefault(x => x.Id == ItemID));
+                    ItemList.Add(dbContext.Items.FirstOrDefault(x => x.Id == ItemID)
+                    
+                        );
             }
             ViewData["PurchaseList"] = purchaseList;
             ViewData["PurchasedItems"] = purchasedItems;
@@ -72,6 +74,27 @@ namespace ShoppingCart.Controllers
             Guid sessionID = Guid.Parse(Request.Cookies["SessionID"]);
             Session session = dbContext.Sessions.FirstOrDefault(x => x.Id == sessionID);
             return session;
+        }
+
+        private string CreateActivationKey()
+        {
+            var activationKey = Guid.NewGuid().ToString();
+
+            List<PurchasedItem> item = dbContext.PurchasedItems.Where(x => x.ActivationKey == x.ActivationKey).ToList();
+            IEnumerable<string> iter =
+                from i in item
+                select i.ActivationKey;
+
+            List<string> keylist = iter.ToList();
+
+            var exists = keylist.Any(key => key == activationKey);
+
+            if (exists) //If there is a same one
+            {
+                activationKey = CreateActivationKey();
+            }
+
+            return activationKey;
         }
     }
 }
