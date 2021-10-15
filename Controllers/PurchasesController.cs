@@ -15,24 +15,31 @@ namespace ShoppingCart.Controllers
         }
         public IActionResult MyPurchases()
         {
-            // // redirect back to login page if session has expired or doesn't exist
-            // Session session = GetSession();
-            // if (session == null)
-            //     return RedirectToAction("Index", "Login");
-            // // get all data:
-            // // item data from Items table,
-            // // Activation Key from PurchaseItems, and PurchaseDate from Purchases
-            // var purchaseList = dbContext.Purchases.Where(x => x.Userid == session.User.id).ToList();
-            // var purchasedItems = new Dictionary<Purchase, List<PurchasedItem>>();
-            // var ItemList = new List<Item>();
-            // foreach (Purchase purchase in purchaseList)
-            // {
-            //     var pItemList = dbContext.PurchasedItems.Where(x => x.PurchaseId == purchase.Id).ToList();
-            //     foreach (Guid ItemID in pItemList.Select(x => x.ItemId).Distinct())
-            //     {
-            //         ItemList.Add(dbContext.Items.FirstOrDefault(x => x.Id == ItemID));
-            //     }
-            // }
+            // redirect back to login page if session has expired or doesn't exist
+            Session session = GetSession();
+            if (session == null)
+                return RedirectToAction("Index", "Login");
+            // get all data:
+            // item data from Items table,
+            // Activation Key from PurchaseItems, and PurchaseDate from Purchases
+            var purchaseList = dbContext.Purchases
+                .Where(x => x.Userid == session.User.id)
+                .OrderByDescending(x => x.PurchaseDate)
+                .ToList();
+            var purchasedItems = new Dictionary<Purchase, List<PurchasedItem>>();
+            var ItemList = new List<Item>();
+            foreach (Purchase purchase in purchaseList)
+            {
+                var pItemList = dbContext.PurchasedItems.
+                    Where(x => x.PurchaseId == purchase.Id)
+                    .ToList();
+                purchasedItems.Add(purchase, pItemList);
+                foreach (Guid ItemID in pItemList.Select(x => x.ItemId).Distinct())              
+                    ItemList.Add(dbContext.Items.FirstOrDefault(x => x.Id == ItemID));                
+            }
+            ViewData["PurchaseList"] = purchaseList;
+            ViewData["PurchasedItems"] = purchasedItems;
+            ViewData["ItemList"] = ItemList;
             // var query = dbContext.Purchases
             //     .Where(x => x.Userid == session.User.id)
             //     .Join(dbContext.PurchasedItems,
