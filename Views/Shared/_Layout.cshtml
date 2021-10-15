@@ -19,7 +19,7 @@
             @if (Context.Request.Cookies["SessionId"] != null)
             {
                 <div class="container">
-                    <a class="navbar-brand" asp-area="" asp-controller="Gallery" asp-action="AllProducts">Hello, @Context.Request.Cookies["Username"]</a>
+                    <a class="navbar-brand" asp-area="" asp-controller="Gallery" asp-action="AllProducts" style="font-weight:bold">Hello, @Context.Request.Cookies["Username"]</a>
                     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                             aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>
@@ -28,10 +28,10 @@
                         <p id="select_count" class="nav navbar-text navbar-right"><i class="fa fa-shopping-cart" aria-hidden="true" style="float: left; font-size: 20pt; margin-right: 10px;"></i></p>
                         <ul class="navbar-nav flex-grow-1">
                             <li class="nav-item">
-                                <a class="navbar-brand" asp-area="" asp-controller="Purchases" asp-action="MyPurchases" style="margin-top:9px">My Purchases</a>
+                                <a class="navbar-brand" asp-area="" asp-controller="Purchases" asp-action="MyPurchases" style="margin-top:9px;text-decoration:underline;color:steelblue">My Purchases</a>
                             </li>
                             <li class="nav-item">
-                                <a class="navbar-brand" asp-area="" asp-controller="Logout" asp-action="Index" style="margin-top:9px">Logout</a>
+                                <a class="navbar-brand" asp-area="" asp-controller="Logout" asp-action="Index" style="margin-top: 9px; text-decoration: underline;color:steelblue">Logout</a>
                             </li>
                         </ul>
                     </div>
