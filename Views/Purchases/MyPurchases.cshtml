@@ -24,6 +24,7 @@
         margin-left: 50px;
         height: fit-content;
         float: left;
+        margin-bottom:10px;
     }
 
     .outerspace {
@@ -67,7 +68,7 @@
                         <p>Purchased On:   @purchaseDate</p>
                         <p>Quantity:   @Quantity</p>
                         <p>
-                            Activation Code:   
+                            Activation Code:
                             @if (Quantity > 1)
                             {
                                 <select>
@@ -82,11 +83,11 @@
                                 @purchasedList.FirstOrDefault(x => x.ItemId == ItemId).ActivationKey
                             }
                         </p>
-                    </div>                
+                    </div>
                 </div>
               }
             }
-        }    
+        }
 
         @*@if (query.Count() > 0)
             {
@@ -104,11 +105,11 @@
                             var Quantity = item.Count();
                             <div class="outerspace">
                                 <div class="my_purchaselist">
-                                    <img src="@imgURL" width="200" height="120"/>
+                                    <img src="@imgURL" width="200" height="120" />
                                 </div>
                                 <h3>@Name</h3>
                                 <p>@Description</p>
-                                <input type="button" value="Download"/>
+                                <input type="button" value="Download" />
                             </div>
                             // if there are multiple activation codes, display combo box
                             // otherwise, plain old text
