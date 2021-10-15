@@ -31,7 +31,7 @@ namespace ShoppingCart
             Purchase p1 = new Purchase
             {
                 PurchaseDate = new DateTime(2021, 10, 1),
-                Userid = cust1.id,
+                Userid = cust1.Id,
             };
             PurchasedItem pItem1 = new PurchasedItem
             {
@@ -52,7 +52,7 @@ namespace ShoppingCart
             Purchase p2 = new Purchase
             {
                 PurchaseDate = new DateTime(2020, 12, 25),
-                Userid = cust1.id,
+                Userid = cust1.Id,
             };
             PurchasedItem pItem3 = new PurchasedItem
             {
@@ -80,7 +80,7 @@ namespace ShoppingCart
             Purchase p3 = new Purchase
             {
                 PurchaseDate = new DateTime(2021, 5, 17),
-                Userid = cust1.id,
+                Userid = cust1.Id,
             };
             PurchasedItem pItem6 = new PurchasedItem
             {
@@ -95,7 +95,7 @@ namespace ShoppingCart
             Purchase p4 = new Purchase
             {
                 PurchaseDate = new DateTime(2021, 6, 4),
-                Userid = cust2.id,
+                Userid = cust2.Id,
             };
             PurchasedItem pItem7 = new PurchasedItem
             {
@@ -109,7 +109,7 @@ namespace ShoppingCart
             Purchase p5 = new Purchase
             {
                 PurchaseDate = new DateTime(2020, 7, 18),
-                Userid = cust2.id,
+                Userid = cust2.Id,
             };
             PurchasedItem pItem8 = new PurchasedItem
             {

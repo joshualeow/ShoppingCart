@@ -23,7 +23,7 @@ namespace ShoppingCart.Controllers
             // item data from Items table,
             // Activation Key from PurchaseItems, and PurchaseDate from Purchases
             var purchaseList = dbContext.Purchases
-                .Where(x => x.Userid == session.User.id)
+                .Where(x => x.Userid == session.User.Id)
                 .OrderByDescending(x => x.PurchaseDate)
                 .ToList();
             var purchasedItems = new Dictionary<Purchase, List<PurchasedItem>>();
