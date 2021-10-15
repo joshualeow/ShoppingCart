@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using ShoppingCart.Models;
 using System;
 using System.Collections.Generic;
@@ -34,8 +34,8 @@ namespace ShoppingCart.Controllers
                     Where(x => x.PurchaseId == purchase.Id)
                     .ToList();
                 purchasedItems.Add(purchase, pItemList);
-                foreach (Guid ItemID in pItemList.Select(x => x.ItemId).Distinct())              
-                    ItemList.Add(dbContext.Items.FirstOrDefault(x => x.Id == ItemID));                
+                foreach (Guid ItemID in pItemList.Select(x => x.ItemId).Distinct())
+                    ItemList.Add(dbContext.Items.FirstOrDefault(x => x.Id == ItemID));
             }
             ViewData["PurchaseList"] = purchaseList;
             ViewData["PurchasedItems"] = purchasedItems;
@@ -72,6 +72,26 @@ namespace ShoppingCart.Controllers
             Guid sessionID = Guid.Parse(Request.Cookies["SessionID"]);
             Session session = dbContext.Sessions.FirstOrDefault(x => x.Id == sessionID);
             return session;
+        }
+        private string CreateActivationKey()
+        {
+            var activationKey = Guid.NewGuid().ToString();
+
+            List<PurchasedItem> item = dbContext.PurchasedItems.Where(x => x.ActivationKey == x.ActivationKey).ToList();
+            IEnumerable<string> iter =
+                from i in item
+                select i.ActivationKey;
+
+            List<string> keylist = iter.ToList();
+
+            var exists = keylist.Any(key => key == activationKey);
+
+            if (exists) //If there is a same one
+            {
+                activationKey = CreateActivationKey();
+            }
+
+            return activationKey;
         }
     }
 }
