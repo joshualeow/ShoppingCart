@@ -1,12 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using ShoppingCart.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
-using ShoppingCart.Models;
 
 namespace ShoppingCart.Controllers
 {
@@ -19,36 +15,47 @@ namespace ShoppingCart.Controllers
         }
         public IActionResult MyPurchases()
         {
-            // redirect back to login page if session has expired or doesn't exist
-            Session session = GetSession();
-            if (session == null)
-                return RedirectToAction("Index", "Login");
-            // get all data:
-            // item data from Items table,
-            // Activation Key from PurchaseItems, and PurchaseDate from Purchases
-            var query = dbContext.Purchases
-                .Where(x => x.Customer.id == session.User.id)
-                .Join(dbContext.PurchasedItems,
-                      purchase => purchase.Id, pItem => pItem.PurchaseId,
-                      (purchase, pItem) => new
-                      {
-                          ActivationKey = pItem.ActivationKey,
-                          ItemId = pItem.ItemId,
-                          PurchaseDate = purchase.PurchaseDate
-                      })
-                .Join(dbContext.Items,
-                      pJoin => pJoin.ItemId, item => item.Id,
-                      (pJoin, item) => new
-                      {
-                          ItemID = item.Id,
-                          ActivationKey = pJoin.ActivationKey,
-                          PurchaseDate = pJoin.PurchaseDate,
-                          Name = item.Name,
-                          Description = item.Description,
-                          ImageURL = item.ImageUrl
-                      })
-                .OrderByDescending(x => x.PurchaseDate);
-            ViewData["query"] = query;
+            // // redirect back to login page if session has expired or doesn't exist
+            // Session session = GetSession();
+            // if (session == null)
+            //     return RedirectToAction("Index", "Login");
+            // // get all data:
+            // // item data from Items table,
+            // // Activation Key from PurchaseItems, and PurchaseDate from Purchases
+            // var purchaseList = dbContext.Purchases.Where(x => x.Userid == session.User.id).ToList();
+            // var purchasedItems = new Dictionary<Purchase, List<PurchasedItem>>();
+            // var ItemList = new List<Item>();
+            // foreach (Purchase purchase in purchaseList)
+            // {
+            //     var pItemList = dbContext.PurchasedItems.Where(x => x.PurchaseId == purchase.Id).ToList();
+            //     foreach (Guid ItemID in pItemList.Select(x => x.ItemId).Distinct())
+            //     {
+            //         ItemList.Add(dbContext.Items.FirstOrDefault(x => x.Id == ItemID));
+            //     }
+            // }
+            // var query = dbContext.Purchases
+            //     .Where(x => x.Userid == session.User.id)
+            //     .Join(dbContext.PurchasedItems,
+            //           purchase => purchase.Id, pItem => pItem.PurchaseId,
+            //           (purchase, pItem) => new
+            //           {
+            //               ActivationKey = pItem.ActivationKey,
+            //               ItemId = pItem.ItemId,
+            //               PurchaseDate = purchase.PurchaseDate
+            //           })
+            //     .Join(dbContext.Items,
+            //           pJoin => pJoin.ItemId, item => item.Id,
+            //           (pJoin, item) => new
+            //           {
+            //               ItemID = item.Id,
+            //               ActivationKey = pJoin.ActivationKey,
+            //               PurchaseDate = pJoin.PurchaseDate,
+            //               Name = item.Name,
+            //               Description = item.Description,
+            //               ImageURL = item.ImageUrl
+            //           })
+            //     .OrderByDescending(x => x.PurchaseDate);
+            // ViewData["query"] = query;
             return View();
         }
         private Session GetSession()

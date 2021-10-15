@@ -1,52 +1,86 @@
-﻿@{
-    var query = (IEnumerable)ViewData["query"];
+﻿@using ShoppingCart.Models;
+@using System.Linq;
+@{
+    var query = (IEnumerable<dynamic>)ViewData["query"];
+    ViewData["Title"] = "My Purchase";
+}
+@*
+@section Scripts {
+    <script src="../../wwroot/js/Gallery/Gallery.js"></script>
+        }
+*@
+<style>
+    .my_purchaselist {
+    text-align: center;
+    border: 1px solid #000000;
+    padding: 5px;
+    background-color: whitesmoke;
+    display: inline-block;
+    width: 300px;
+    margin-left: 50px;
+    height: fit-content;
+    float: left;
 }
 
-@{
-    if (query.Count() > 0)
+.outerspace{
+    width: 50%;
+}
+
+.mu_puchasedinfo {
+    text-align: right;
+    float: right;
+    margin-left: 100px;
+    padding: 50px;
+    white-space: pre-line;
+    margin-bottom: 10px;
+    width: 50%;
+}
+</style>
+
+@*@if (query.Count() > 0)
     {
-        foreach(var obj in query)
+        @foreach (dynamic obj in query)
         {
-            <div class="purchase-grid">
-            string PurchaseDate = obj.PurchaseDate.ToShortDateString();
-            List<Guid> uniqueItems = obj.Select(x => x.ItemID).Distinct().ToList();
-            foreach(Guid id in uniqueItems)
-            {
-                var Item = obj.Where(x => x.ItemID == id).ToList();
-                string imgURL = Item.FirstOrDefault().ImageURL;
-                string Name = Item.FirstOrDefault().Name;
-                string Description = Item.FirstOrDefault().Description;
-                int Quantity = Item.Count();
-                <div class="item-info-left">
-                    <div class="image-box">
-                    <img src=@imgURL/>
+            @obj
+            string purchaseDate = obj.PurchaseDate.ToShortDateString();
+                <div class="row" style="width:1110px ;margin-left:1px">                                
+                @foreach (Guid id in ((IEnumerable<dynamic>)obj).Select(x => x.itemID).Distinct().ToList())
+                {
+                    var item = ((IEnumerable<dynamic>)obj).Where(x => x.itemID == id).ToList();
+                    var imgURL = item.FirstOrDefault().ImageURL;
+                    var Name = item.FirstOrDefault().Name;
+                    var Description = item.FirstOrDefault().Description;
+                    var Quantity = item.Count();
+                    <div class="outerspace">
+                        <div class="my_purchaselist">
+                            <img src="@imgURL" width="200" height="120"/>
+                        </div>
+                        <h3>@Name</h3>
+                        <p>@Description</p>                                         
+                        <input type="button" value="Download"/>
                     </div>
-                    <div class= "item-name">
-                    @Name
+                    // if there are multiple activation codes, display combo box
+                    // otherwise, plain old text
+                    <div class="my_purchasedinfo">
+                        <p>Purchased On: @purchaseDate</p>
+                        <p>Quantity: @Quantity</p>
+                        <p>Activation Code:
+                        @if (Quantity > 1)
+                        {
+                            <select>
+                                @foreach (var key in ((IEnumerable<dynamic>)item).Select(x => x.ActivationKey))
+                                {
+                                    <option value="@key">@key</option>
+                                }
+                            </select>
+                        }
+                        else
+                        {
+                            @item.Select(x => x.ActivationKey).ToString()
+                        }
+                        </p>
                     </div>
-                    <div class="item-description">
-                    @Description
-                    </div>
-                    <input type="button" value="Download"/>
-                </div>
-                // if there are multiple activation codes, display combo box
-                // otherwise, plain old text
-                <div class="item-info-right">
-                    <p>Purchased On: @PurchaseDate</p>
-                    <p>Quantity: @Quantity</p>
-                    <p>Activation Code:
-                    if (Quantity > 1)
-                        <select>
-                            foreach(var key in Item.Select(x => x.ActivationKey))
-                                <option value="@key">@key</option>
-                        </select>
-                    else
-                        @Item.Select(x => x.ActivationKey).ToString()
-                    </p>
+                }
                 </div>
             }
-            </div>
-        }
-    }
-}
-
+        }*@
