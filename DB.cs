@@ -304,7 +304,5 @@ namespace ShoppingCart
 
             dbContext.SaveChanges();
         }
-
-
     }
 }
