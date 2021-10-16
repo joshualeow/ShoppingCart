@@ -26,7 +26,7 @@ function AddToCart(itemId) {
 
             let data = JSON.parse(this.responseText);
             if (data.status == "success") {
-                //window.location.href = "/Gallery/AllProducts";
+                window.location.href = "/Gallery/AllProducts";
             }
         }
     }
@@ -34,8 +34,6 @@ function AddToCart(itemId) {
     let itemtocart = {
         ItemId: itemId
     };
-
-    alert("Hello")
     xhr.send(JSON.stringify(itemtocart));
 
 }

@@ -89,6 +89,7 @@ namespace ShoppingCart.Controllers
         }
     
 
+
         public IActionResult CheckOut()
         {
             Session session = GetSession();
