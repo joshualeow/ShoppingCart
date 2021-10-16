@@ -23,6 +23,38 @@ namespace ShoppingCart
             SeedItems();
             SeedUsersTable();
             SeedPurchaseTables();
+            SeedCartTable();
+        }
+
+        public void SeedCartTable()
+        {
+            List<User> uList = dbContext.Users.Where(x => x.Id != null).ToList();
+            foreach(User u in uList)
+            {
+                Cart cart = new Cart
+                {
+                    User = u,
+                    CartItemCategories=new List<CartItemCategory>()
+                };
+                CartItemCategory cc1 = new CartItemCategory
+                {
+                    NumberOfItem = 3,
+                    Cart = cart,
+                    Item = dbContext.Items.FirstOrDefault(x => x.Name == ".NET Charts")
+                };
+                CartItemCategory cc2 = new CartItemCategory
+                {
+                    NumberOfItem = 1,
+                    Cart = cart,
+                    Item = dbContext.Items.FirstOrDefault(x => x.Name == ".NET Blazor")
+                };
+                cart.CartItemCategories.Add(cc1);
+                cart.CartItemCategories.Add(cc2);
+                dbContext.Add(cart);
+                dbContext.Add(cc1);
+                dbContext.Add(cc2);
+                dbContext.SaveChanges();
+            }
         }
 
         public void SeedPurchaseTables()
