@@ -18,10 +18,11 @@ namespace ShoppingCart.Controllers
             this.dbContext = dbContext;
         }
 
-        public IActionResult Index(Guid itemId)
+        public IActionResult Index(Guid itemId, Guid purchaseid)
         {
             dynamic model = new ExpandoObject();
             model.ItemId = itemId;
+            model.PurchaseId = purchaseid;
 
             return View(model);
         }
@@ -37,11 +38,12 @@ namespace ShoppingCart.Controllers
             int score = int.Parse(form["Score"]);
 
             Guid itemId = Guid.Parse(form["ModelId"]);
+            Guid purchaseId = Guid.Parse(form["Model1Id"]);
             dbContext.Add(new Review
             {
                 Id = new Guid(),
                 ItemId = itemId,
-                PurchaseId = new Guid(),
+                PurchaseId = purchaseId,
                 ReviewContent = reviewContent,
                 Score = score,
                 ReviewDate = DateTime.Now,
