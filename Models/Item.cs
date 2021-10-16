@@ -33,5 +33,7 @@ namespace ShoppingCart.Models
         [MaxLength(50)]
         public string ImageUrl { get; set; }
 
+        [Required]
+        public virtual ICollection<Review> Reviews { get; set; }
     }
 }
