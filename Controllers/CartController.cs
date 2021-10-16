@@ -1,14 +1,15 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using ShoppingCart.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ShoppingCart.Models;
 
 namespace ShoppingCart.Controllers
 {
     public class CartController : Controller
     {
+
         //get the database object for use in action methods
         private DBContext dbContext;
         public CartController(DBContext dbContext)
@@ -40,17 +41,56 @@ namespace ShoppingCart.Controllers
 
             return View();
         }
+        public IActionResult AddToCart([FromBody] ItemToCart items)
+        {
+            Session session = GetSession();
+            if (session == null)
+            {
+                return Json(new { status = "fail" });
+            }
+
+            //if(items.ItemId == null)
+            //{
+            //    return Json(new { status = "fail" });
+            //}
+
+            Cart cart = dbContext.Carts.FirstOrDefault(x => x.User.Id == session.User.Id);
+            Guid Itemid = Guid.Parse(items.ItemId);
+
+            CartItemCategory cartitems = dbContext.CartItemCategories.FirstOrDefault(x => x.Item.Id == Itemid);
+            if (cartitems != null)
+            {
+                cartitems.NumberOfItem += 1;
+            }
+
+            else
+            {
+                Item item = dbContext.Items.FirstOrDefault(x => x.Id == Itemid);
+                CartItemCategory cartitemcategory = new CartItemCategory
+                {
+                    NumberOfItem = 1,
+                    Item = item,
+                    Cart = cart
+                };
+                cart.CartItemCategories.Add(cartitemcategory);
+                dbContext.CartItemCategories.Add(cartitemcategory);
+
+            }
+            dbContext.SaveChanges();
+
+            return Json(new { status = "success" });
+        }
 
         public IActionResult CheckOut()
         {
             Session session = GetSession();
-            if (session == null)
+            if(session==null)
                 return RedirectToAction("Index", "Logout");
 
             Cart cart = dbContext.Carts.FirstOrDefault(x => x.User.Id == session.User.Id);
             //check if cart is empty
             bool empty = true;
-            foreach (CartItemCategory ct in cart.CartItemCategories)
+            foreach(CartItemCategory ct in cart.CartItemCategories)
             {
                 if (ct.NumberOfItem > 0)
                     empty = false;
@@ -64,9 +104,9 @@ namespace ShoppingCart.Controllers
                     Userid = cart.User.Id
                 };
                 dbContext.Add(purchase);
-                foreach (CartItemCategory ct in cart.CartItemCategories)
+                foreach(CartItemCategory ct in cart.CartItemCategories)
                 {
-                    for (int i = 1; i <= ct.NumberOfItem; i++)
+                    for(int i = 1; i <= ct.NumberOfItem; i++)
                     {
                         PurchasedItem purchasedItem = new PurchasedItem
                         {
@@ -81,7 +121,7 @@ namespace ShoppingCart.Controllers
                 }
 
                 List<CartItemCategory> ccList = dbContext.CartItemCategories.Where(x => x.Cart.Id == cart.Id).ToList();
-                foreach (CartItemCategory cc in ccList)
+                foreach(CartItemCategory cc in ccList)
                 {
                     dbContext.Remove(cc);
                     dbContext.SaveChanges();
@@ -91,21 +131,34 @@ namespace ShoppingCart.Controllers
 
             return RedirectToAction("MyPurchases", "Purchases");
         }
-
-        /*
-        public IActionResult AdjustNum([FromBody] Cart ct, int OPindicator)
+        
+        // for ADD and MINUS buttons in ViewCart page
+        public IActionResult AdjustNum(string bookname, int quantity, int flag)
         {
             Session session = GetSession();
             if (session == null)
                 return RedirectToAction("Index", "Logout");
-
+            // retrieve the repective cart and cart-item-category
             Cart cart = dbContext.Carts.FirstOrDefault(x => x.User.Id == session.User.Id);
-            CartItemCategory cc = dbContext.CartItemCategories.FirstOrDefault(x => x.Item.Name == _name);
-
-
-            return 
+            CartItemCategory cc = dbContext.CartItemCategories.FirstOrDefault(x => x.Cart.Id == cart.Id && x.Item.Name == bookname.Trim());
+            
+            // ADD case, indicated by flag==1
+            if (flag == 1)
+            {
+                cc.NumberOfItem++;
+                dbContext.SaveChanges();
+            }
+            // MINUS case, indicated by flag!=1
+            else
+            {
+                cc.NumberOfItem--;
+                if (cc.NumberOfItem <= 0)
+                    dbContext.Remove(cc);
+                dbContext.SaveChanges();
+            }
+            return RedirectToAction("ViewCart", "Cart");
         }
-        */
+        
 
         private float CalculatePrice(Cart cart)
         {
@@ -134,5 +187,6 @@ namespace ShoppingCart.Controllers
 
             return session;
         }
+
     }
 }
