@@ -18,7 +18,7 @@ namespace ShoppingCart.Controllers
             // redirect back to login page if session has expired or doesn't exist
             Session session = GetSession();
             if (session == null)
-                return RedirectToAction("Index", "Login");
+                return RedirectToAction("LoginIndex", "Login");
             // get all data:
             // item data from Items table,
             // Activation Key from PurchaseItems, and PurchaseDate from Purchases
