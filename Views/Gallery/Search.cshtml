@@ -45,12 +45,10 @@
     </script>
 }
 
-
 <form action="/Gallery/Search" method="POST">
     <!--The search form in html-->
-    <div>
-        <input id="search" name="searchStr" value="@searchStr" class="form-control" placeholder="Search" />
-
+    <div class="p-3 bg-dark text-white">
+        <span class="glyphicon glyphicon-search" aria-hidden="true"></span><input id="search" name="searchStr" value="@searchStr" class="form-control" placeholder="Search here!" />
     </div>
 </form>
 
@@ -58,7 +56,10 @@
 
 @if (items.Count == 0)
 {
-    @:There are no matches.
+    <div style="text-align:center; font-size: 18px">
+        <p>There are no matches.</p>
+        <a asp-action="AllProducts">Return to Main Page</a>
+    </div>
 }
 else
 {
@@ -73,5 +74,9 @@ else
                 <button type="button" class="btn btn-warning">$@item.Price - Add to Cart </button>
             </div>
         }
+    </div>
+
+    <div style="text-align:center; font-size: 18px">
+        <a asp-action="AllProducts">Return to Main Page</a>
     </div>
 }

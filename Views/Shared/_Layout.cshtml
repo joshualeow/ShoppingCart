@@ -14,12 +14,11 @@
 </head>
 <body>
     <header>
-
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             @if (Context.Request.Cookies["SessionId"] != null)
             {
                 <div class="container">
-                    <a class="navbar-brand" asp-area="" asp-controller="Gallery" asp-action="AllProducts">Hello, @Context.Request.Cookies["Username"]</a>
+                    <a class="navbar-brand" asp-area="" asp-controller="Gallery" asp-action="AllProducts" style="font-weight:bold">Hello, @Context.Request.Cookies["Username"]!</a>
                     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                             aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>
@@ -30,10 +29,10 @@
                         </p>
                         <ul class="navbar-nav flex-grow-1">
                             <li class="nav-item">
-                                <a class="navbar-brand" asp-area="" asp-controller="Purchases" asp-action="MyPurchases" style="margin-top:9px">My Purchases</a>
+                                <a class="navbar-brand" asp-area="" asp-controller="Purchases" asp-action="MyPurchases" style="margin-top:9px;text-decoration:underline;color:steelblue">My Purchases</a>
                             </li>
                             <li class="nav-item">
-                                <a class="navbar-brand" asp-area="" asp-controller="Logout" asp-action="Index" style="margin-top:9px">Logout</a>
+                                <a class="navbar-brand" asp-area="" asp-controller="Logout" asp-action="Index" style="margin-top: 9px; text-decoration: underline;color:steelblue">Logout</a>
                             </li>
                         </ul>
                     </div>
@@ -41,20 +40,26 @@
             }
         </nav>
     </header>
+
     <div class="container">
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2021 - ShoppingCart - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-        </div>
-    </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @RenderSection("Scripts", required: false)
 </body>
 </html>
+<div class="container">
+    <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
+        <div class="col-md-4 d-flex align-items-center">
+            <a href="/" class="mb-3 me-2 mb-md-0 text-muted text-decoration-none lh-1">
+                <svg class="bi" width="30" height="24"><use xlink:href="#bootstrap"></use></svg>
+            </a>
+            <span class="text-muted">© SA53 Team 6 Shopping Cart</span>
+        </div>
+    </footer>
+</div>

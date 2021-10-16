@@ -25,6 +25,9 @@ namespace ShoppingCart.Models
 
         public DbSet<Cart> Carts { get; set; }
 
+
         public DbSet<CartItemCategory> CartItemCategories { get; set; }
+        public DbSet<Review> Reviews { get; set; }
+
     }
 }
