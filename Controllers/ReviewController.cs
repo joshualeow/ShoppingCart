@@ -12,6 +12,7 @@ namespace ShoppingCart.Controllers
     public class ReviewController : Controller
     {
         private DBContext dbContext;
+
         public ReviewController([FromServices] DBContext dbContext)
         {
             this.dbContext = dbContext;
@@ -24,6 +25,7 @@ namespace ShoppingCart.Controllers
 
             return View(model);
         }
+
         public IActionResult ReviewReceive(IFormCollection form)
         {
             //// redirect back to login page if session has expired or doesn't exist
@@ -33,8 +35,8 @@ namespace ShoppingCart.Controllers
 
             string reviewContent = form["ReviewContent"];
             int score = int.Parse(form["Score"]);
-            Guid itemId = Guid.Parse(form["ItemId"]);
 
+            Guid itemId = Guid.Parse(form["ModelId"]);
             dbContext.Add(new Review
             {
                 Id = new Guid(),
@@ -48,13 +50,13 @@ namespace ShoppingCart.Controllers
 
             return View();
         }
+
         public IActionResult ReviewHistory()
         {
             //// redirect back to login page if session has expired or doesn't exist
             //Session session = GetSession();
             //if (session == null)
             //    return RedirectToAction("LoginIndex", "Login");
-
 
             return View();
         }

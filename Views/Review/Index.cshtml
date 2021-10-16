@@ -19,7 +19,6 @@
         align-items: center;
         justify-content: center;
         flex-direction: column;
-
     }
 
     .star-rating input {
@@ -32,10 +31,9 @@
         font-family: fontAwesome;
         font-size: 52px;
         color: #444;
-        padding: 20px 20px;  
+        padding: 20px 20px;
         float: right;
         transition: all 0.2s ease;
-
     }
 
     input:not(:checked) ~ label:hover,
@@ -78,7 +76,7 @@
     .btn {
         height: 15%;
         width: 96%;
-  /*      border: 1px solid #444;*/
+        /*      border: 1px solid #444;*/
         padding: 4px 20px 20px 20px;
         outline: none;
         background: #1a36f1;
@@ -93,7 +91,7 @@
 <form name="ReviewForm" action="/Review/ReviewReceive" onsubmit="return validateReviewData()" method="post">
     <div class="Card0">
         <div class="star-rating">
-            <input type="hidden" id="ItemId" value="@Model.ItemId" />
+            <input type="hidden" id="ItemId" value="@Model.ItemId" name="ModelId" />
             <input type="radio" name="Score" value=5 id="star1"> <label for="star1" class="fas fa-star"></label>
             <input type="radio" name="Score" value=4 id="star2"> <label for="star2" class="fas fa-star"></label>
             <input type="radio" name="Score" value=3 id="star3"> <label for="star3" class="fas fa-star"></label>
@@ -105,7 +103,6 @@
             <div class="btn">
                 <button type="submit" class="btn">Post</button>
             </div>
-
         </div>
     </div>
 </form>
