@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using ShoppingCart.Models;
 using System;
 using System.Collections.Generic;
+using System.Dynamic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -16,9 +17,12 @@ namespace ShoppingCart.Controllers
             this.dbContext = dbContext;
         }
 
-        public IActionResult Index()
+        public IActionResult Index(Guid itemId)
         {
-            return View();
+            dynamic model = new ExpandoObject();
+            model.ItemId = itemId;
+
+            return View(model);
         }
         public IActionResult ReviewReceive(IFormCollection form)
         {
@@ -27,21 +31,20 @@ namespace ShoppingCart.Controllers
             //if (session == null)
             //    return RedirectToAction("LoginIndex", "Login");
 
-            //string reviewContent = form["ReviewContent"];
-            //int score = int.Parse(form["Score"]);
-            //itemId =
-            //purchaseId =
+            string reviewContent = form["ReviewContent"];
+            int score = int.Parse(form["Score"]);
+            Guid itemId = Guid.Parse(form["ItemId"]);
 
-            //dbContext.Add(new Review
-            //{
-            //    Id = new Guid(),
-            //    ItemId = @
-            //    PurchaseId = ,
-            //    ReviewContent = reviewContent,
-            //    Score = score,
-            //    ReviewDate = DateTime.Now,
-            //    }) ;
-            //dbContext.SaveChanges();
+            dbContext.Add(new Review
+            {
+                Id = new Guid(),
+                ItemId = itemId,
+                PurchaseId = new Guid(),
+                ReviewContent = reviewContent,
+                Score = score,
+                ReviewDate = DateTime.Now,
+            });
+            dbContext.SaveChanges();
 
             return View();
         }
