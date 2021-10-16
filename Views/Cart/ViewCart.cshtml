@@ -1,0 +1,149 @@
+@{
+    ViewData["Title"] = "View Cart Page";
+    Cart cart = (Cart)ViewData["cart"];
+    //DBContext db = (DBContext)ViewData["DataBase"];
+}
+
+<style>
+    header{
+        display:none
+    }
+    footer{
+        display:none
+    }
+    #hidden{
+        display:none
+    }
+    .navbar{
+        display:none
+    }
+</style>
+
+
+@section Scripts{ 
+    <script type="text/javascript">
+       /* window.onload = function () {
+            let num = document.getElementById("hidden").innerHTML;
+            for (let i = 0; i < num; i++) {
+                let elem_add = document.getElementById("add_" + i);
+                let elem_minus = document.getElementById("minus_" + i);
+                //handle Add case when clicked
+                elem_add.onclick = function () {
+                    let name = document.getElementById("name_" + i).innerHTML;
+
+                    let xhr = new XMLHttpRequest();
+                    xhr.open("POST", "/Cart/AdjustNum");
+                    xhr.setRequestHeader("Content-Type", "application/json; Charser=utf8");
+
+                    xhr.onreadystatechange = function () {
+                        if (this.readyState == XMLHttpRequest.DONE) {
+                            if (this.status != 200)
+                                return;
+                            let data = JSON.parse(this.responseText);
+                            if (data.toADD == true) {
+                                let NUM = document.getElementById("num_" + i);
+                                NUM.innerHTML = parseInt(parseInt(NUM.innerHTML) + 1);
+                                let elem_price = document.getElementById("TotalPrice");
+                                elem_price.innerHTML=data.
+                            }
+                            
+                        }
+                    }
+                    let data = {
+                        "name": name,
+                        "flag": 1
+                    };
+                    xhr.send(JSON.stringify(data));
+                }
+                //handle Minus case when clicked
+                elem_minus.onclick = function () {
+                    let name = document.getElementById("name_" + i).innerHTML;
+
+                    let xhr = new XMLHttpRequest();
+                    xhr.open("POST", "/Cart/AdjustNum");
+                    xhr.setRequestHeader("Content-Type", "application/json; Charser=utf8");
+
+                    xhr.onreadystatechange = function () {
+                        if (this.readyState == XMLHttpRequest.DONE) {
+                            if (this.status != 200)
+                                return;
+                            let data = JSON.parse(this.responseText);
+                            if (data.toADD == true) {
+                                let NUM = document.getElementById("num_" + i);
+                                NUM.innerHTML = parseInt(parseInt(NUM.innerHTML) + 1);
+                            }
+                        }
+
+                    }
+                    let data = {
+                        "name": name,
+                        "flag": 0
+                    };
+                    xhr.send(JSON.stringify(data));
+                }
+
+            }
+
+        }
+        */
+        //Edits
+    </script>
+}
+
+@if (cart.CartItemCategories == null || cart.CartItemCategories.Count == 0)
+{
+    <h1>CART is EMPTY</h1>
+}
+else
+{
+    <div>
+        <h2>View Cart</h2> 
+        <form id="continue" action="/Gallery/AllProducts" method="POST">
+            <input type="submit" value="Continue Shopping" />
+        </form>  
+        <form id="checkout" action="/Cart/CheckOut" method="POST">
+            <input type="submit" value="Checkout" />
+        </form>
+    </div>
+    
+    <div class="row" style="width:1110px ;margin-left:1px">
+
+        <div id="hidden">@cart.CartItemCategories.Count</div>
+        <div id="TotalPrice">Price: @ViewData["price"]</div> 
+        <br />
+
+        @{  int i = 0;
+            foreach (CartItemCategory ctgy in cart.CartItemCategories)
+            {
+                Item item = ctgy.Item;
+
+            <div class="my_list">
+                <img src="@item.ImageUrl" width="200" height="120" />
+                <h3 id="name_@i">@item.Name</h3>
+                <p>@item.Description</p>
+            </div>
+
+            <div>
+                Unit Price<h5 id="SinglePrice_@i">@item.Price</h5>
+                Quantity:<h5 id="num_@i">@ctgy.NumberOfItem </h5>
+                
+                <form action="/Cart/AdjustNum" method="post">
+                    <input style="display:none" type="text" name="bookname" value="@item.Name" />
+                    <input style="display:none" type="number" name="quantity" value="@ctgy.NumberOfItem" />
+                    <input style="display:none" type="number" name="flag" value="1" />
+                    <input type="submit" value="ADD"/>
+                </form>
+                <form action="/Cart/AdjustNum" method="post">
+                    <input style="display:none" type="text" name="bookname" value="@item.Name" />
+                    <input style="display:none" type="number" name="quantity" value="@ctgy.NumberOfItem" />
+                    <input style="display:none" type="number" name="flag" value="0" />
+                    <input type="submit" value="MINUS" />
+                </form>
+                
+
+            </div>
+                i++;
+            }
+         }
+    </div>
+}

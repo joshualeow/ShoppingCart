@@ -24,7 +24,9 @@
                         <span class="navbar-toggler-icon"></span>
                     </button>
                     <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse" id=" select_count_box">
-                        <p id="select_count" class="nav navbar-text navbar-right"><i class="fa fa-shopping-cart" aria-hidden="true" style="float: left; font-size: 20pt; margin-right: 10px;"></i></p>
+                        <p id="select_count" class="nav navbar-text navbar-right">
+                                    <a class="fa fa-shopping-cart" asp-area="" asp-controller="Cart" asp-action="ViewCart" aria-hidden="true" style="float: left; font-size: 20pt; margin-right: 10px;"> Number Added</a>
+                        </p>
                         <ul class="navbar-nav flex-grow-1">
                             <li class="nav-item">
                                 <a class="navbar-brand" asp-area="" asp-controller="Purchases" asp-action="MyPurchases" style="margin-top:9px;text-decoration:underline;color:steelblue">My Purchases</a>
