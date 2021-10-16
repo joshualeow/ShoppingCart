@@ -39,6 +39,17 @@ namespace ShoppingCart.Controllers
             float price = (float)Math.Round(CalculatePrice(cart), 1);
             ViewData["price"] = price;
 
+            int cartitemqty = 0;
+
+            foreach (CartItemCategory cc in cart.CartItemCategories)
+            {
+                cartitemqty += cc.NumberOfItem;
+            }
+
+            string cartitemqtystring = cartitemqty.ToString();
+            Console.WriteLine(cartitemqtystring);
+            Response.Cookies.Append("cartitemqty", cartitemqtystring);
+
             return View();
         }
         public IActionResult AddToCart([FromBody] ItemToCart items)
