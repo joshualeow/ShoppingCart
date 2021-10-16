@@ -73,6 +73,17 @@ namespace ShoppingCart.Controllers
             dbContext.Sessions.Add(session);
             dbContext.SaveChanges();
 
+            Cart cart = dbContext.Carts.FirstOrDefault(x => x.User.Id == session.User.Id);
+            int cartitemqty = 0;
+
+            foreach (CartItemCategory cc in cart.CartItemCategories)
+            {
+                cartitemqty += cc.NumberOfItem;
+            }
+
+            string cartitemqtystring = cartitemqty.ToString();
+            Response.Cookies.Append("cartitemqty", cartitemqtystring);
+
             Response.Cookies.Append("SessionId", session.Id.ToString()); //options can include expire date and path
             Response.Cookies.Append("Username", user.Username);
 

@@ -1,53 +1,41 @@
 ﻿window.onload = function () { //Only after DOM is completed
     /* setup event listeners for tasks selection */
-
-    /* setup event listener to intercept click on select_count */
-    let elem = document.getElementById("a_item");
-    elem.addEventListener('click', OnCountClick);
-}
-
-function UpdateSelectStatus() {
-    let select_count = Object.keys(selected).length; //How many selected
-    let select_elem = document.getElementById("select_count"); //pass to cshtml
-    let selectbox_elem = document.getElementById("select_count_box");
-
-    if (select_elem && selectbox_elem) {
-        if (select_count > 0) {
-
-            select_elem.innerHTML =  select_count 
-                ((select_count > 1) ? "s" : "");
-        }
-        else {
-            select_count.style.display = "none";
-        }
+    let elems = document.getElementsByClassName("add-to-cart");
+    for (let i = 0; i < elems.length; i++) {
+        elems[i].addEventListener('click', OnAddCartClick);
     }
 }
 
-function OnCountClick(event) {
+function OnAddCartClick(event) {
+    let target = event.currentTarget;
+
+    AddToCart(target.id)
+}
+
+function AddToCart(itemId) {
     let xhr = new XMLHttpRequest();
 
-    xhr.open("POST", "/Task/AddTasks");
+    xhr.open("POST", "/Cart/AddToCart");
     xhr.setRequestHeader("Content-Type", "application/json; charset=utf8");
 
     xhr.onreadystatechange = function () {
         if (this.readyState == XMLHttpRequest.DONE) {
             if (this.status != 200) {
-                /* error; info user etc */
                 return;
             }
 
             let data = JSON.parse(this.responseText);
             if (data.status == "success") {
-                window.location.href = "/Task/MyTasks";
+                //window.location.href = "/Gallery/AllProducts";
             }
         }
     }
 
-    /* package as JSON object */
-    let data = { TaskIds: [] };
-    for (let key of Object.keys(selected)) {
-        data.TaskIds.push(key);
-    }
+    let itemtocart = {
+        ItemId: itemId
+    };
 
-    xhr.send(JSON.stringify(data));
+    alert("Hello")
+    xhr.send(JSON.stringify(itemtocart));
+
 }

@@ -49,11 +49,6 @@ namespace ShoppingCart.Controllers
                 return Json(new { status = "fail" });
             }
 
-            //if(items.ItemId == null)
-            //{
-            //    return Json(new { status = "fail" });
-            //}
-
             Cart cart = dbContext.Carts.FirstOrDefault(x => x.User.Id == session.User.Id);
             Guid Itemid = Guid.Parse(items.ItemId);
 
@@ -72,14 +67,27 @@ namespace ShoppingCart.Controllers
                     Item = item,
                     Cart = cart
                 };
-                cart.CartItemCategories.Add(cartitemcategory);
                 dbContext.CartItemCategories.Add(cartitemcategory);
+                cart.CartItemCategories.Add(cartitemcategory);
+
 
             }
             dbContext.SaveChanges();
 
+            int cartitemqty = 0;
+
+            foreach (CartItemCategory cc in cart.CartItemCategories)
+            {
+                cartitemqty += cc.NumberOfItem;
+            }
+
+            string cartitemqtystring = cartitemqty.ToString();
+            Console.WriteLine(cartitemqtystring);
+            Response.Cookies.Append("cartitemqty", cartitemqtystring);
+
             return Json(new { status = "success" });
         }
+    
 
         public IActionResult CheckOut()
         {
