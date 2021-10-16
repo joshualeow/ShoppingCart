@@ -98,7 +98,18 @@ namespace ShoppingCart.Controllers
 
             return Json(new { status = "success" });
         }
-    
+        
+        public IActionResult ClearCart()
+        {
+            Session session = GetSession();
+            if (session == null)
+            {
+                return Json(new { status = "fail" });
+            }
+
+            Response.Cookies.Delete("cartitemqty");
+            return Json(new { status = "success" });
+        }
 
 
         public IActionResult CheckOut()
@@ -147,6 +158,7 @@ namespace ShoppingCart.Controllers
                     dbContext.SaveChanges();
                 }
                 cart.CartItemCategories = new List<CartItemCategory>();
+                ClearCart();
             }
 
             return RedirectToAction("MyPurchases", "Purchases");
