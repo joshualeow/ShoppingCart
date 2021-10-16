@@ -93,6 +93,7 @@
 <form name="ReviewForm" action="/Review/ReviewReceive" onsubmit="return validateReviewData()" method="post">
     <div class="Card0">
         <div class="star-rating">
+            <input type="hidden" id="ItemId" value="@Model.ItemId" />
             <input type="radio" name="Score" value=5 id="star1"> <label for="star1" class="fas fa-star"></label>
             <input type="radio" name="Score" value=4 id="star2"> <label for="star2" class="fas fa-star"></label>
             <input type="radio" name="Score" value=3 id="star3"> <label for="star3" class="fas fa-star"></label>
