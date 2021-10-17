@@ -36,7 +36,7 @@ namespace ShoppingCart
                     User = u,
                     CartItemCategories=new List<CartItemCategory>()
                 };
-                CartItemCategory cc1 = new CartItemCategory
+/*                CartItemCategory cc1 = new CartItemCategory
                 {
                     NumberOfItem = 3,
                     Cart = cart,
@@ -47,12 +47,12 @@ namespace ShoppingCart
                     NumberOfItem = 1,
                     Cart = cart,
                     Item = dbContext.Items.FirstOrDefault(x => x.Name == ".NET Blazor")
-                };
-                cart.CartItemCategories.Add(cc1);
-                cart.CartItemCategories.Add(cc2);
+                };*/
+/*                cart.CartItemCategories.Add(cc1);
+                cart.CartItemCategories.Add(cc2);*/
                 dbContext.Add(cart);
-                dbContext.Add(cc1);
-                dbContext.Add(cc2);
+/*                dbContext.Add(cc1);
+                dbContext.Add(cc2);*/
                 dbContext.SaveChanges();
             }
         }

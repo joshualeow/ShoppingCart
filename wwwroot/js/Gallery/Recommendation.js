@@ -1,6 +1,6 @@
 ﻿window.onload = function () { //Only after DOM is completed
     /* setup event listeners for tasks selection */
-    let elems = document.getElementsByClassName("add-to-cart");
+    let elems = document.getElementsByClassName("add-to-cart2");
     for (let i = 0; i < elems.length; i++) {
         elems[i].addEventListener('click', OnAddCartClick);
     }
@@ -26,7 +26,7 @@ function AddToCart(itemId) {
 
             let data = JSON.parse(this.responseText);
             if (data.status == "success") {
-                window.location.href = "/Gallery/AllProducts";
+                window.location.href = "/Cart/ViewCart";
             }
         }
     }
@@ -35,5 +35,4 @@ function AddToCart(itemId) {
         ItemId: itemId
     };
     xhr.send(JSON.stringify(itemtocart));
-
 }

@@ -52,7 +52,6 @@ namespace ShoppingCart.Controllers
         {
             if (searchStr == null)
             {
-                searchStr = "";
                 return RedirectToAction("AllProducts");
             }
 

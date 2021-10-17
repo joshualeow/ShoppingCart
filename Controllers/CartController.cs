@@ -39,6 +39,16 @@ namespace ShoppingCart.Controllers
             float price = (float)Math.Round(CalculatePrice(cart), 1);
             ViewData["price"] = price;
 
+            int cartitemqty = 0;
+
+            foreach (CartItemCategory cc in cart.CartItemCategories)
+            {
+                cartitemqty += cc.NumberOfItem;
+            }
+
+            string cartitemqtystring = cartitemqty.ToString();
+            Response.Cookies.Append("cartitemqty", cartitemqtystring);
+
             return View();
         }
         public IActionResult AddToCart([FromBody] ItemToCart items)
@@ -48,11 +58,6 @@ namespace ShoppingCart.Controllers
             {
                 return Json(new { status = "fail" });
             }
-
-            //if(items.ItemId == null)
-            //{
-            //    return Json(new { status = "fail" });
-            //}
 
             Cart cart = dbContext.Carts.FirstOrDefault(x => x.User.Id == session.User.Id);
             Guid Itemid = Guid.Parse(items.ItemId);
@@ -72,14 +77,38 @@ namespace ShoppingCart.Controllers
                     Item = item,
                     Cart = cart
                 };
-                cart.CartItemCategories.Add(cartitemcategory);
                 dbContext.CartItemCategories.Add(cartitemcategory);
+                cart.CartItemCategories.Add(cartitemcategory);
+
 
             }
             dbContext.SaveChanges();
 
+            int cartitemqty = 0;
+
+            foreach (CartItemCategory cc in cart.CartItemCategories)
+            {
+                cartitemqty += cc.NumberOfItem;
+            }
+
+            string cartitemqtystring = cartitemqty.ToString();
+            Response.Cookies.Append("cartitemqty", cartitemqtystring);
+
             return Json(new { status = "success" });
         }
+        
+        public IActionResult ClearCart()
+        {
+            Session session = GetSession();
+            if (session == null)
+            {
+                return Json(new { status = "fail" });
+            }
+
+            Response.Cookies.Delete("cartitemqty");
+            return Json(new { status = "success" });
+        }
+
 
         public IActionResult CheckOut()
         {
@@ -127,6 +156,7 @@ namespace ShoppingCart.Controllers
                     dbContext.SaveChanges();
                 }
                 cart.CartItemCategories = new List<CartItemCategory>();
+                ClearCart();
             }
 
             return RedirectToAction("MyPurchases", "Purchases");
@@ -147,6 +177,7 @@ namespace ShoppingCart.Controllers
             {
                 cc.NumberOfItem++;
                 dbContext.SaveChanges();
+
             }
             // MINUS case, indicated by flag!=1
             else
@@ -156,6 +187,17 @@ namespace ShoppingCart.Controllers
                     dbContext.Remove(cc);
                 dbContext.SaveChanges();
             }
+
+            int cartitemqty = 0;
+
+            foreach (CartItemCategory cc2 in cart.CartItemCategories)
+            {
+                cartitemqty += cc2.NumberOfItem;
+            }
+
+            string cartitemqtystring = cartitemqty.ToString();
+            Response.Cookies.Append("cartitemqty", cartitemqtystring);
+
             return RedirectToAction("ViewCart", "Cart");
         }
         
