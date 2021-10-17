@@ -27,6 +27,8 @@ namespace ShoppingCart
             // Check the generated recommendation pool and delete it if there is one selected by the user
             for (int i = 0; i < result.Count; i++)
             {
+                if (result.Count <= 0 || itemName.Count <= 0)
+                    break;
                 for (int j = 0; j < itemName.Count; j++)
                 {
                     if (itemName[j] == result[i].Name)
