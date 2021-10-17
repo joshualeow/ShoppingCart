@@ -25,6 +25,14 @@ namespace ShoppingCart.Controllers
             }
 
             List<ShoppingCart.Models.Item> items = dbContext.Items.ToList();
+            Dictionary<Guid, double> AvgItemScore = new Dictionary<Guid, double>();
+            foreach (var itemID in items.Select(x => x.Id))
+            {
+                int[] scores = dbContext.Reviews.Where(x => x.ItemId == itemID).Select(x => x.Score).ToArray();
+                double meanScore = (scores.Count() > 0) ? Math.Round(scores.Average(), 1) : 0.0;
+                AvgItemScore.Add(itemID, meanScore);
+            }
+            ViewData["AvgItemScore"] = AvgItemScore;
             //if(searchStr == null)
             //{
             //    searchStr = "";
