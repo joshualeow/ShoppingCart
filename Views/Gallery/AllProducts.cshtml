@@ -3,7 +3,7 @@
     string searchStr = (string)ViewData["searchStr"];
 
     List<ShoppingCart.Models.Item> items = (List<ShoppingCart.Models.Item>)ViewData["items"];
-
+    Dictionary<Guid, double> AvgItemScore = (Dictionary<Guid, double>)ViewData["AvgItemScore"];
 }
 <style>
     .my_list {
@@ -91,11 +91,20 @@
 
     @foreach (ShoppingCart.Models.Item item in items)
     {
-        <div class="my_list">
-            <img src="@item.ImageUrl" width="200" height="120" />
-            <h3>@item.Name</h3>
-            <p>@item.Description</p>
-            <button type="button" id="@item.Id" class="btn btn-warning add-to-cart">$@item.Price - Add to Cart </button>
-        </div>
+    <div class="my_list">
+        <img src="@item.ImageUrl" width="200" height="120" />
+        <h3>@item.Name</h3>
+        <p>@item.Description</p>
+        <button type="button" class="btn btn-warning">$@item.Price - Add to Cart </button>
+        <br />
+        @if (AvgItemScore[item.Id] > 0)
+        {
+            <a href="/Review/ReviewHistory?itemId=@item.Id">@AvgItemScore[item.Id]@Html.Raw("/5 &star;")</a>
+        }
+        else
+        {
+            @:Not rated yet
+        }
+    </div>
     }
 </div>
