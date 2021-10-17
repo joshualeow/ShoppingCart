@@ -29,37 +29,37 @@ namespace ShoppingCart
         public void SeedCartTable()
         {
             List<User> uList = dbContext.Users.Where(x => x.Id != null).ToList();
-            foreach(User u in uList)
+            foreach (User u in uList)
             {
                 Cart cart = new Cart
                 {
                     User = u,
-                    CartItemCategories=new List<CartItemCategory>()
+                    CartItemCategories = new List<CartItemCategory>()
                 };
-/*                CartItemCategory cc1 = new CartItemCategory
-                {
-                    NumberOfItem = 3,
-                    Cart = cart,
-                    Item = dbContext.Items.FirstOrDefault(x => x.Name == ".NET Charts")
-                };
-                CartItemCategory cc2 = new CartItemCategory
-                {
-                    NumberOfItem = 1,
-                    Cart = cart,
-                    Item = dbContext.Items.FirstOrDefault(x => x.Name == ".NET Blazor")
-                };*/
-/*                cart.CartItemCategories.Add(cc1);
-                cart.CartItemCategories.Add(cc2);*/
+                /*                CartItemCategory cc1 = new CartItemCategory
+                                {
+                                    NumberOfItem = 3,
+                                    Cart = cart,
+                                    Item = dbContext.Items.FirstOrDefault(x => x.Name == ".NET Charts")
+                                };
+                                CartItemCategory cc2 = new CartItemCategory
+                                {
+                                    NumberOfItem = 1,
+                                    Cart = cart,
+                                    Item = dbContext.Items.FirstOrDefault(x => x.Name == ".NET Blazor")
+                                };*/
+                /*                cart.CartItemCategories.Add(cc1);
+                                cart.CartItemCategories.Add(cc2);*/
                 dbContext.Add(cart);
-/*                dbContext.Add(cc1);
-                dbContext.Add(cc2);*/
+                /*                dbContext.Add(cc1);
+                                dbContext.Add(cc2);*/
                 dbContext.SaveChanges();
             }
         }
 
         public void SeedPurchaseTables()
         {
-            User cust1 = dbContext.Users.FirstOrDefault(x => x.Username == "john");
+            /*User cust1 = dbContext.Users.FirstOrDefault(x => x.Username == "john");
             Purchase p1 = new Purchase
             {
                 PurchaseDate = new DateTime(2021, 10, 1),
@@ -152,7 +152,7 @@ namespace ShoppingCart
             cust2.Purchases.Add(p5);
             dbContext.Purchases.Add(p5);
             dbContext.PurchasedItems.Add(pItem8);
-            dbContext.SaveChanges();
+            dbContext.SaveChanges();*/
         }
 
         public void SeedItems()
