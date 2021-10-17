@@ -20,19 +20,32 @@ namespace ShoppingCart.Controllers
 
         public IActionResult Index(Guid itemId, Guid purchaseid)
         {
+
+
             dynamic model = new ExpandoObject();
             model.ItemId = itemId;
             model.PurchaseId = purchaseid;
 
-            return View(model);
+            var reviewList = dbContext.Reviews
+                .Where(x => x.ItemId == itemId)
+                .OrderByDescending(x => x.ReviewDate)
+                .ToList();
+            if (reviewList.Count == 0)
+            {
+                return View(model);
+            }
+            else
+            {
+                return RedirectToAction("ReviewHistory", "Review");
+            }
         }
 
         public IActionResult ReviewReceive(IFormCollection form)
         {
-            //// redirect back to login page if session has expired or doesn't exist
-            //Session session = GetSession();
-            //if (session == null)
-            //    return RedirectToAction("LoginIndex", "Login");
+            // redirect back to login page if session has expired or doesn't exist
+            Session session = GetSession();
+            if (session == null)
+                return RedirectToAction("LoginIndex", "Login");
 
             string reviewContent = form["ReviewContent"];
             int score = int.Parse(form["Score"]);
@@ -53,12 +66,38 @@ namespace ShoppingCart.Controllers
             return View();
         }
 
-        public IActionResult ReviewHistory()
+        public IActionResult ReviewHistory(Guid itemId)
         {
-            //// redirect back to login page if session has expired or doesn't exist
-            //Session session = GetSession();
-            //if (session == null)
-            //    return RedirectToAction("LoginIndex", "Login");
+            // redirect back to login page if session has expired or doesn't exist
+            Session session = GetSession();
+            if (session == null)
+                return RedirectToAction("LoginIndex", "Login");
+
+            dynamic model = new ExpandoObject();
+            model.ItemId = itemId;
+
+            List<ShoppingCart.Models.Review> reviews = dbContext.Reviews
+                .Where(x => x.ItemId == itemId)
+                .OrderByDescending(x => x.ReviewDate)
+                .ToList();
+            
+
+            //var purchasedItems = new Dictionary<Purchase, List<PurchasedItem>>();
+            //var ItemList = new List<Item>();
+            //foreach (Purchase purchase in purchaseList)
+            //{
+            //    var pItemList = dbContext.PurchasedItems.
+            //        Where(x => x.PurchaseId == purchase.Id)
+            //        .ToList();
+            //    purchasedItems.Add(purchase, pItemList);
+            //    foreach (Guid ItemID in pItemList.Select(x => x.ItemId).Distinct())
+            //        ItemList.Add(dbContext.Items.FirstOrDefault(x => x.Id == ItemID)
+
+            //            );
+            //}
+            ViewData["reviews"] = reviews;
+            //ViewData["PurchasedItems"] = purchasedItems;
+            //ViewData["ItemList"] = ItemList;
 
             return View();
         }
