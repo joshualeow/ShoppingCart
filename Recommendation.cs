@@ -25,16 +25,24 @@ namespace ShoppingCart
         public List<Item> GenerateRecommendations(List<Item> result, List<string> itemName, List<Item> allItems)
         {
             // Check the generated recommendation pool and delete it if there is one selected by the user
-            for (int i = 0; i < result.Count; i++)
+            try
             {
-                if (result.Count <= 0 || itemName.Count <= 0)
-                    break;
-                for (int j = 0; j < itemName.Count; j++)
+                for (int i = 0; i < result.Count; i++)
                 {
-                    if (itemName[j] == result[i].Name)
-                        result.Remove(result[i]);
+                    if (result.Count <= 0 || itemName.Count <= 0)
+                        break;
+                    for (int j = 0; j < itemName.Count; j++)
+                    {
+                        if (itemName[j] == result[i].Name)
+                            result.Remove(result[i]);
+                    }
                 }
             }
+            catch
+            {
+                return result;
+            }
+
             //Check whether the items in the generated recommendation pool are less than 3.
             //If so, randomly add items to make sure there are 3 items at least(It is also guaranteed that the added products cannot be repeated in the original pool)
             while (result.Count < 3)
