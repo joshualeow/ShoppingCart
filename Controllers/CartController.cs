@@ -179,6 +179,7 @@ namespace ShoppingCart.Controllers
             {
                 cc.NumberOfItem++;
                 dbContext.SaveChanges();
+
             }
             // MINUS case, indicated by flag!=1
             else
@@ -188,6 +189,18 @@ namespace ShoppingCart.Controllers
                     dbContext.Remove(cc);
                 dbContext.SaveChanges();
             }
+
+            int cartitemqty = 0;
+
+            foreach (CartItemCategory cc2 in cart.CartItemCategories)
+            {
+                cartitemqty += cc2.NumberOfItem;
+            }
+
+            string cartitemqtystring = cartitemqty.ToString();
+            Console.WriteLine(cartitemqtystring);
+            Response.Cookies.Append("cartitemqty", cartitemqtystring);
+
             return RedirectToAction("ViewCart", "Cart");
         }
         
