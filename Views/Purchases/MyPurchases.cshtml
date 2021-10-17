@@ -6,6 +6,15 @@
     var ItemList = (List<Item>)ViewData["ItemList"];
     ViewData["Title"] = "My Purchase";
 }
+
+<script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+<script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script>
+    $(function () {
+        $("[data-toggle='popover']").popover();
+    });
+</script>
+
 <style>
     p {
         font-weight: normal;
@@ -65,7 +74,11 @@
                         <img src="@imgURL" width="200" height="200" /><br />
                         <h3>@Name</h3>
                         <p>@Description</p>
-                        <input type="button" value="Download" />
+                        <button type="button" class="btn btn-warning"
+                                data-container="body" data-toggle="popover" data-placement="right"
+                                data-content="Thanks for downloading!">
+                            Download
+                        </button>
                     </div>
                     <div class="my_purchasedinfo">
                         <ul class="list-group">
