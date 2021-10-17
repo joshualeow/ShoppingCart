@@ -5,6 +5,7 @@
     var PurchasedItems = (Dictionary<Purchase, List<PurchasedItem>>)ViewData["PurchasedItems"];
     var ItemList = (List<Item>)ViewData["ItemList"];
     ViewData["Title"] = "My Purchase";
+    var db = (DBContext)ViewData["Dbcontext"];
 }
 
 <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
@@ -54,6 +55,12 @@
     .row {
         width: 80%;
     }
+
+    a.disabled {
+        color: darkgray;
+        pointer-events: none;
+        filter: opacity(50);
+    }
 </style>
 <body style="position:relative;">
     @if (PurchaseList.Count() > 0)
@@ -101,9 +108,22 @@
                                 @purchasedList.FirstOrDefault(x => x.ItemId == ItemId).ActivationKey
                             }
                         </p>
-                        <p>
-                            <a href="/Review/Index?itemId=@ItemId&purchaseId=@purchase.Id&reviewId=Revier.Id"> Write or View Your Review </a>
-                        </p>
+
+                        @{
+                            Review review = db.Reviews.FirstOrDefault(x => x.ItemId == ItemId && x.PurchaseId == purchase.Id);
+                            if (review == null)
+                            {
+                                <p>
+                                    <a href="/Review/Index?itemId=@ItemId&purchaseId=@purchase.Id"> Write Your Review </a>
+                                </p>
+                            }
+                            else
+                            {
+                                <p>
+                                    <a href="/Review/Index?itemId=@ItemId&purchaseId=@purchase.Id" class="disabled"> Write Your Review </a>
+                                </p>
+                            }
+                        }
                     </div>
                 </div>
             }

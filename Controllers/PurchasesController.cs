@@ -9,10 +9,12 @@ namespace ShoppingCart.Controllers
     public class PurchasesController : Controller
     {
         private DBContext dbContext;
+
         public PurchasesController([FromServices] DBContext dbContext)
         {
             this.dbContext = dbContext;
         }
+
         public IActionResult MyPurchases()
         {
             // redirect back to login page if session has expired or doesn't exist
@@ -36,12 +38,13 @@ namespace ShoppingCart.Controllers
                 purchasedItems.Add(purchase, pItemList);
                 foreach (Guid ItemID in pItemList.Select(x => x.ItemId).Distinct())
                     ItemList.Add(dbContext.Items.FirstOrDefault(x => x.Id == ItemID)
-                    
+
                         );
             }
             ViewData["PurchaseList"] = purchaseList;
             ViewData["PurchasedItems"] = purchasedItems;
             ViewData["ItemList"] = ItemList;
+            ViewData["Dbcontext"] = dbContext;
             // var query = dbContext.Purchases
             //     .Where(x => x.Userid == session.User.id)
             //     .Join(dbContext.PurchasedItems,
@@ -67,9 +70,10 @@ namespace ShoppingCart.Controllers
             // ViewData["query"] = query;
             return View();
         }
+
         private Session GetSession()
         {
-            if(Request.Cookies["SessionID"] == null)
+            if (Request.Cookies["SessionID"] == null)
                 return null;
             Guid sessionID = Guid.Parse(Request.Cookies["SessionID"]);
             Session session = dbContext.Sessions.FirstOrDefault(x => x.Id == sessionID);
