@@ -47,7 +47,6 @@ namespace ShoppingCart.Controllers
             }
 
             string cartitemqtystring = cartitemqty.ToString();
-            Console.WriteLine(cartitemqtystring);
             Response.Cookies.Append("cartitemqty", cartitemqtystring);
 
             return View();
@@ -93,7 +92,6 @@ namespace ShoppingCart.Controllers
             }
 
             string cartitemqtystring = cartitemqty.ToString();
-            Console.WriteLine(cartitemqtystring);
             Response.Cookies.Append("cartitemqty", cartitemqtystring);
 
             return Json(new { status = "success" });
@@ -198,7 +196,6 @@ namespace ShoppingCart.Controllers
             }
 
             string cartitemqtystring = cartitemqty.ToString();
-            Console.WriteLine(cartitemqtystring);
             Response.Cookies.Append("cartitemqty", cartitemqtystring);
 
             return RedirectToAction("ViewCart", "Cart");
