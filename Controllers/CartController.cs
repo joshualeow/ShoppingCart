@@ -115,8 +115,6 @@ namespace ShoppingCart.Controllers
             Session session = GetSession();
             if (session == null)
                 return RedirectToAction("Index", "Logout");
-            if(!Request.Cookies.Keys.Contains("ReloginAfterCheckout"))
-                return RedirectToRoute(new{controller="Logout", action="Index", from="checkout"});
             Cart cart = dbContext.Carts.FirstOrDefault(x => x.User.Id == session.User.Id);
             //check if cart is empty
             bool empty = true;

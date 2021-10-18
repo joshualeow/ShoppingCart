@@ -6,7 +6,6 @@
     var ItemList = (List<Item>)ViewData["ItemList"];
     ViewData["Title"] = "My Purchase";
     var ReviewDictionary = (Dictionary<Guid, Review>)ViewData["ReviewDictionary"];
-    var JustPurchased = (bool)ViewData["JustPurchased"];
 }
 
 <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
@@ -77,12 +76,6 @@
  }
 </style>
 <body style="position:relative;">
-    @if (JustPurchased)
-    {
-        <div class="purchase-successful">
-            <p class="purchase-successful">Item successfully purchased.</p>
-        </div>
-    }
     @if (PurchaseList.Count() > 0)
     {
         @foreach (Purchase purchase in PurchaseList)

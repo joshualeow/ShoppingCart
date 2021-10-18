@@ -18,16 +18,8 @@ namespace ShoppingCart.Controllers
         {
             this.dbContext = dbContext;
         }
-        public IActionResult LoginIndex(string from="")
+        public IActionResult LoginIndex()
         {
-            if (from == "checkout")
-            {
-                CookieOptions options = new CookieOptions();
-                options.Expires = DateTime.Now.AddMinutes(1);
-                Response.Cookies.Append("ReloginAfterCheckout", "true", options);
-            }
-            else
-                Response.Cookies.Delete("ReloginAfterCheckout");
             if (Request.Cookies["SessionId"] != null)
             { //Check for cookies straight away, if there is existing
                 Guid sessionId = Guid.Parse(Request.Cookies["sessionId"]); //request from cookies
@@ -91,11 +83,6 @@ namespace ShoppingCart.Controllers
 
             Response.Cookies.Append("SessionId", session.Id.ToString()); 
             Response.Cookies.Append("Username", user.Username);
-            if (Request.Cookies.ContainsKey("ReloginAfterCheckout"))
-            {
-                Response.Cookies.Append("ReloginAfterCheckout", "true");
-                return RedirectToAction("CheckOut", "Cart");
-            }        
             return RedirectToAction("AllProducts", "Gallery");
         }
     }
