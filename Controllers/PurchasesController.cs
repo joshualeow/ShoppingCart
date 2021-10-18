@@ -15,7 +15,7 @@ namespace ShoppingCart.Controllers
             this.dbContext = dbContext;
         }
 
-        public IActionResult MyPurchases()
+        public IActionResult MyPurchases(string purchaseSuccessful="")
         {
             // redirect back to login page if session has expired or doesn't exist
             Session session = GetSession();
@@ -40,14 +40,19 @@ namespace ShoppingCart.Controllers
                 foreach (Guid ItemID in pItemList.Select(x => x.ItemId).Distinct())
                 {
                     ItemList.Add(dbContext.Items.FirstOrDefault(x => x.Id == ItemID));
-                    Review review = dbContext.Reviews.FirstOrDefault(x => x.ItemId == ItemID && x.PurchaseId == purchase.Id);
-                    ReviewDictionary.Add(ItemID, review);
+                    if (!ReviewDictionary.ContainsKey(ItemID))
+                    {
+                        Review review = dbContext.Reviews.FirstOrDefault(x => x.ItemId == ItemID && x.PurchaseId == purchase.Id);
+                        ReviewDictionary.Add(ItemID, review);
+                    }
                 }
             }
             ViewData["PurchaseList"] = purchaseList;
             ViewData["PurchasedItems"] = purchasedItems;
             ViewData["ItemList"] = ItemList;
             ViewData["ReviewDictionary"] = ReviewDictionary;
+            if (purchaseSuccessful == "true")
+                ViewData["JustPurchased"] = true;
             // var query = dbContext.Purchases
             //     .Where(x => x.Userid == session.User.id)
             //     .Join(dbContext.PurchasedItems,

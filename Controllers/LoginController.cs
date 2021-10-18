@@ -18,16 +18,15 @@ namespace ShoppingCart.Controllers
         {
             this.dbContext = dbContext;
         }
-
-        public IActionResult LoginIndex()
+        public IActionResult LoginIndex(string from="")
         {
-            if (Request.Cookies["SessionId"] != null)
+            if (from == "checkout")            
+                Response.Cookies.Append("ReloginAfterCheckout", "true");
+                if (Request.Cookies["SessionId"] != null)
             { //Check for cookies straight away, if there is existing
                 Guid sessionId = Guid.Parse(Request.Cookies["sessionId"]); //request from cookies
-                Session session = dbContext.Sessions.FirstOrDefault(x =>
-                    x.Id == sessionId //calidate against database, If cannot find
-                );
-
+                //validate against database, If cannot find
+                Session session = dbContext.Sessions.FirstOrDefault(x => x.Id == sessionId);                
                 if (session == null)
                 {
                     // invalid Session ID; route to Logout, someone trying to fake userid
@@ -86,7 +85,11 @@ namespace ShoppingCart.Controllers
 
             Response.Cookies.Append("SessionId", session.Id.ToString()); 
             Response.Cookies.Append("Username", user.Username);
-
+            if (Request.Cookies.ContainsKey("ReloginAfterCheckout"))
+            {
+                Response.Cookies.Append("ReloginAfterCheckout", "true");
+                return RedirectToAction("CheckOut", "Cart");
+            }        
             return RedirectToAction("AllProducts", "Gallery");
         }
     }

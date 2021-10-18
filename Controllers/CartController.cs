@@ -113,9 +113,10 @@ namespace ShoppingCart.Controllers
         public IActionResult CheckOut()
         {
             Session session = GetSession();
-            if(session==null)
+            if (session == null)
                 return RedirectToAction("Index", "Logout");
-
+            if(!Request.Cookies.Keys.Contains("ReloginAfterCheckout"))
+                return RedirectToRoute(new{controller="Logout", action="Index", from="checkout"});
             Cart cart = dbContext.Carts.FirstOrDefault(x => x.User.Id == session.User.Id);
             //check if cart is empty
             bool empty = true;
@@ -158,8 +159,7 @@ namespace ShoppingCart.Controllers
                 cart.CartItemCategories = new List<CartItemCategory>();
                 ClearCart();
             }
-
-            return RedirectToAction("MyPurchases", "Purchases");
+            return RedirectToAction("MyPurchases", "Purchases", new {purchaseSuccessful="true"});
         }
         
         // for ADD and MINUS buttons in ViewCart page
