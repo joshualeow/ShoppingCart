@@ -130,7 +130,7 @@
                         </p>
 
                         @{
-                            Review review = db.Reviews.FirstOrDefault(x => x.ItemId == ItemId && x.PurchaseId == purchase.Id);
+                            Review review = ReviewDictionary[ItemId];
                             if (review == null)
                             {
                                 <p>
