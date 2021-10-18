@@ -14,6 +14,7 @@ namespace ShoppingCart.Controllers
             // they won't be sent over next time
             Response.Cookies.Delete("SessionId"); //Delete cookie and send back to login as a clean slate
             Response.Cookies.Delete("Username");
+            Response.Cookies.Delete("ReloginAfterCheckout");
             if (from == "checkout")
                 return RedirectToAction("LoginIndex", "Login", new { from = "checkout" });
             return RedirectToAction("LoginIndex", "Login");

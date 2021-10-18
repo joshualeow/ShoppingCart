@@ -20,13 +20,19 @@ namespace ShoppingCart.Controllers
         }
         public IActionResult LoginIndex(string from="")
         {
-            if (from == "checkout")            
-                Response.Cookies.Append("ReloginAfterCheckout", "true");
-                if (Request.Cookies["SessionId"] != null)
+            if (from == "checkout")
+            {
+                CookieOptions options = new CookieOptions();
+                options.Expires = DateTime.Now.AddMinutes(1);
+                Response.Cookies.Append("ReloginAfterCheckout", "true", options);
+            }
+            else
+                Response.Cookies.Delete("ReloginAfterCheckout");
+            if (Request.Cookies["SessionId"] != null)
             { //Check for cookies straight away, if there is existing
                 Guid sessionId = Guid.Parse(Request.Cookies["sessionId"]); //request from cookies
                 //validate against database, If cannot find
-                Session session = dbContext.Sessions.FirstOrDefault(x => x.Id == sessionId);                
+                Session session = dbContext.Sessions.FirstOrDefault(x => x.Id == sessionId);
                 if (session == null)
                 {
                     // invalid Session ID; route to Logout, someone trying to fake userid
