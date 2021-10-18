@@ -84,7 +84,7 @@ namespace ShoppingCart.Controllers
             string cartitemqtystring = cartitemqty.ToString();
             Response.Cookies.Append("cartitemqty", cartitemqtystring);
 
-            Response.Cookies.Append("SessionId", session.Id.ToString()); //options can include expire date and path
+            Response.Cookies.Append("SessionId", session.Id.ToString()); 
             Response.Cookies.Append("Username", user.Username);
 
             return RedirectToAction("AllProducts", "Gallery");

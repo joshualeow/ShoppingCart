@@ -16,7 +16,7 @@ namespace ShoppingCart.Controllers
             this.dbContext = dbContext;
         }
 
-        public IActionResult AllProducts(string searchStr)
+        public IActionResult AllProducts()
         {
             Session session = GetSession();
             if (session == null)
