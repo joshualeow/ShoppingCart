@@ -30,6 +30,7 @@ namespace ShoppingCart.Controllers
                 .ToList();
             var purchasedItems = new Dictionary<Purchase, List<PurchasedItem>>();
             var ItemList = new List<Item>();
+            var ReviewDictionary = new Dictionary<Guid, Review>();
             foreach (Purchase purchase in purchaseList)
             {
                 var pItemList = dbContext.PurchasedItems.
@@ -37,14 +38,16 @@ namespace ShoppingCart.Controllers
                     .ToList();
                 purchasedItems.Add(purchase, pItemList);
                 foreach (Guid ItemID in pItemList.Select(x => x.ItemId).Distinct())
-                    ItemList.Add(dbContext.Items.FirstOrDefault(x => x.Id == ItemID)
-
-                        );
+                {
+                    ItemList.Add(dbContext.Items.FirstOrDefault(x => x.Id == ItemID));
+                    Review review = dbContext.Reviews.FirstOrDefault(x => x.ItemId == ItemID && x.PurchaseId == purchase.Id);
+                    ReviewDictionary.Add(ItemID, review);
+                }
             }
             ViewData["PurchaseList"] = purchaseList;
             ViewData["PurchasedItems"] = purchasedItems;
             ViewData["ItemList"] = ItemList;
-            ViewData["Dbcontext"] = dbContext;
+            ViewData["ReviewDictionary"] = ReviewDictionary;
             // var query = dbContext.Purchases
             //     .Where(x => x.Userid == session.User.id)
             //     .Join(dbContext.PurchasedItems,

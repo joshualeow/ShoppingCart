@@ -5,7 +5,7 @@
     var PurchasedItems = (Dictionary<Purchase, List<PurchasedItem>>)ViewData["PurchasedItems"];
     var ItemList = (List<Item>)ViewData["ItemList"];
     ViewData["Title"] = "My Purchase";
-    var db = (DBContext)ViewData["Dbcontext"];
+    var ReviewDictionary = (Dictionary<Guid, Review>)ViewData["ReviewDictionary"];
 }
 
 <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
@@ -113,7 +113,7 @@
                         </p>
 
                         @{
-                            Review review = db.Reviews.FirstOrDefault(x => x.ItemId == ItemId && x.PurchaseId == purchase.Id);
+                            Review review = ReviewDictionary[ItemId];
                             if (review == null)
                             {
                                 <p>
