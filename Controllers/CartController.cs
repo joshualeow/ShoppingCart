@@ -241,7 +241,7 @@ namespace ShoppingCart.Controllers
             return session;
         }
 
-        private Session GetVisitorSession()
+        private VisitorSession GetVisitorSession()
         {
             if (Request.Cookies["VisitorSessionId"] == null)
             {
@@ -250,7 +250,7 @@ namespace ShoppingCart.Controllers
 
             Guid sessionId = Guid.Parse(Request.Cookies["VisitorSessionId"]);
 
-            VisitorSession session = dbContext.Sessions.FirstOrDefault(x =>
+            VisitorSession session = dbContext.VisitorSessions.FirstOrDefault(x =>
                 x.Id == sessionId);
 
             return session;
