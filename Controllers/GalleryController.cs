@@ -33,15 +33,6 @@ namespace ShoppingCart.Controllers
                 AvgItemScore.Add(itemID, meanScore);
             }
             ViewData["AvgItemScore"] = AvgItemScore;
-            //if(searchStr == null)
-            //{
-            //    searchStr = "";
-            //}
-
-            //List<Item> items = dbContext.Items.Where(x => x.Name.Contains(searchStr)).ToList();
-
-            //ViewData["searchStr"] = searchStr;
-            //ViewData["items"] = items;
 
             ViewData["items"] = items;
 
@@ -94,25 +85,6 @@ namespace ShoppingCart.Controllers
             return session;//to use user information
         }
 
-        //public IActionResult AddItem([FromBody] Item items) //This will be able to accept the list of taskId
-        //{
-        //    Session session = GetSession();
-        //    if (session == null)
-        //    {
-        //        return Json(new { status = "fail" });
-        //    }
 
-        //    /* everything okay so far; proceed */
-        //    foreach (string id in items.Id)
-        //    {
-        //        Guid taskId = Guid.Parse(id);
-        //        TasksCart.Models.Task task = dbContext.Tasks.FirstOrDefault(x => x.Id == taskId);
-        //        task.ReserveTime = null;
-        //        task.User = session.User;
-        //    }
-        //    dbContext.SaveChanges();
-
-        //    return Json(new { status = "success" });
-        //}
     }
 }
