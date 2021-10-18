@@ -25,7 +25,7 @@ namespace ShoppingCart.Controllers
             { //Check for cookies straight away, if there is existing
                 Guid sessionId = Guid.Parse(Request.Cookies["sessionId"]); //request from cookies
                 Session session = dbContext.Sessions.FirstOrDefault(x =>
-                    x.Id == sessionId //calidate against database, If cannot find
+                    x.Id == sessionId //validate against database, If cannot find
                 );
 
                 if (session == null)

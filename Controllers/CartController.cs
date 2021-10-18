@@ -20,12 +20,12 @@ namespace ShoppingCart.Controllers
         public IActionResult ViewCart()
         {
             Session session = GetSession();
-            if (session == null)
-                return RedirectToAction("Index", "Logout");
+            //if (session == null)
+            //    return RedirectToAction("Index", "Logout");
 
             //find the cart associated to the user
             var CART = from c in dbContext.Carts
-                       where c.User.Id == session.User.Id
+                       where c.Sessions.Id == session.Id
                        select c;
             Cart cart = new Cart();
             foreach (var c in CART)

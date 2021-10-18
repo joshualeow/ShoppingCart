@@ -21,7 +21,14 @@ namespace ShoppingCart.Controllers
             Session session = GetSession();
             if (session == null)
             {
-                return RedirectToAction("Index", "Logout");
+                Session session1 = new Session()
+                {
+
+                };
+
+                dbContext.Sessions.Add(session1);
+                dbContext.SaveChanges();
+                Response.Cookies.Append("SessionId", session1.Id.ToString());
             }
 
             List<ShoppingCart.Models.Item> items = dbContext.Items.ToList();
@@ -35,6 +42,8 @@ namespace ShoppingCart.Controllers
             ViewData["AvgItemScore"] = AvgItemScore;
 
             ViewData["items"] = items;
+
+
 
             return View();
         }

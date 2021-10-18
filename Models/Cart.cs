@@ -14,6 +14,8 @@ namespace ShoppingCart.Models
         }
         [Key]
         public Guid Id { get; set; }
+        public virtual Session Sessions { get; set; }
+
         public virtual User User { get; set; }
         public virtual ICollection<CartItemCategory> CartItemCategories { get; set; }
     }
