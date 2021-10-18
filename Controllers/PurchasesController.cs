@@ -45,14 +45,13 @@ namespace ShoppingCart.Controllers
                         Review review = dbContext.Reviews.FirstOrDefault(x => x.ItemId == ItemID && x.PurchaseId == purchase.Id);
                         ReviewDictionary.Add(ItemID, review);
                     }
+                    ItemList.Add(dbContext.Items.FirstOrDefault(x => x.Id == ItemID));
                 }
             }
             ViewData["PurchaseList"] = purchaseList;
             ViewData["PurchasedItems"] = purchasedItems;
             ViewData["ItemList"] = ItemList;
             ViewData["ReviewDictionary"] = ReviewDictionary;
-            if (purchaseSuccessful == "true")
-                ViewData["JustPurchased"] = true;
             // var query = dbContext.Purchases
             //     .Where(x => x.Userid == session.User.id)
             //     .Join(dbContext.PurchasedItems,
