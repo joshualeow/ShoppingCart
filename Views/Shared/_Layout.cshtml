@@ -2,6 +2,12 @@
     <script src="~/js/Gallery/Gallery.js"></script>
 }
 
+<script>
+    function cartclick() {
+        alert("Please Login to add to cart!")
+    }
+</script>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -19,29 +25,46 @@
 <body>
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            @if (Context.Request.Cookies["SessionId"] != null)
+            @if (Context.Request.Cookies["SessionId"] == null)
             {
-                <div class="container">
-                    <a class="navbar-brand" asp-area="" asp-controller="Gallery" asp-action="AllProducts" style="font-weight:bold">Hello, @Context.Request.Cookies["Username"]!</a>
-                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                            aria-expanded="false" aria-label="Toggle navigation">
-                        <span class="navbar-toggler-icon"></span>
-                    </button>
-                    <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse" id=" select_count_box">
-                        <p id="select_count" class="nav navbar-text navbar-right">
-                            <a class="fa fa-shopping-cart" asp-area="" asp-controller="Cart" asp-action="ViewCart" aria-hidden="true" style="float: left; font-size: 20pt; margin-right: 10px;"></a> @Context.Request.Cookies["cartitemqty"]
-                        </p>
-                        <ul class="navbar-nav flex-grow-1">
-                            <li class="nav-item">
-                                <a class="navbar-brand" asp-area="" asp-controller="Purchases" asp-action="MyPurchases" style="margin-top:9px;text-decoration:underline;color:steelblue">My Purchases</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="navbar-brand" asp-area="" asp-controller="Logout" asp-action="Index" style="margin-top: 9px; text-decoration: underline;color:steelblue">Logout</a>
-                            </li>
-                        </ul>
-                    </div>
+                <a class="navbar-brand" asp-area="" asp-controller="Gallery" asp-action="AllProducts" style="font-weight:bold">Hello!</a>
+                <ul class="navbar-nav flex-grow-1">
+                    <li class="nav-item">
+                        <a class="navbar-brand" asp-area="" asp-controller="Logout" asp-action="Index" style="margin-top: 9px; text-decoration: underline;color:steelblue">Login</a>
+                    </li>
+                </ul>
+
+                <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse" id=" select_count_box">
+
+                    <p id="select_count" class="nav navbar-text navbar-right">
+                        <a class="fa fa-shopping-cart" onclick="cartclick()" aria-hidden="true" style="float: left; font-size: 20pt; margin-right: 10px;"></a> @Context.Request.Cookies["cartitemqty"]
+                    </p>
                 </div>
             }
+
+
+            @if (Context.Request.Cookies["SessionId"] != null)
+            {<a class="navbar-brand" asp-area="" asp-controller="Gallery" asp-action="AllProducts" style="font-weight:bold">Hello, @Context.Request.Cookies["Username"]!</a>
+
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse" id=" select_count_box">
+
+                <p id="select_count" class="nav navbar-text navbar-right">
+                    <a class="fa fa-shopping-cart" asp-area="" asp-controller="Cart" asp-action="ViewCart" aria-hidden="true" style="float: left; font-size: 20pt; margin-right: 10px;"></a> @Context.Request.Cookies["cartitemqty"]
+                </p>
+                <ul class="navbar-nav flex-grow-1">
+                    <li class="nav-item">
+                        <a class="navbar-brand" asp-area="" asp-controller="Purchases" asp-action="MyPurchases" style="margin-top:9px;text-decoration:underline;color:steelblue">My Purchases</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="navbar-brand" asp-area="" asp-controller="Logout" asp-action="Index" style="margin-top: 9px; text-decoration: underline;color:steelblue">Logout</a>
+                    </li>
+                </ul>
+            </div>
+        }
         </nav>
     </header>
 
