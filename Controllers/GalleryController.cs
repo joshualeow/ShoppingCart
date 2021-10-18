@@ -22,13 +22,14 @@ namespace ShoppingCart.Controllers
 
             if(session == null)
             {
-                VisitorSession session1 = new VisitorSession()
+                User user = new User();
+                VisitorSession visitor1 = new VisitorSession()
                 {
-
+                    User = user
                 };
-                dbContext.VisitorSessions.Add(session1);
+                dbContext.VisitorSessions.Add(visitor1);
                 dbContext.SaveChanges();
-                Response.Cookies.Append("VisitorSessionId", session1.Id.ToString());
+                Response.Cookies.Append("VisitorSessionId", visitor1.Id.ToString());
             }
 
 

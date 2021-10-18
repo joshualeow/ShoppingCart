@@ -24,30 +24,41 @@ namespace ShoppingCart.Controllers
             //    return RedirectToAction("Index", "Logout");
 
             //find the cart associated to the user
-            var CART = from c in dbContext.Carts
-                       where c.User.Id == session.User.Id
-                       select c;
-            Cart cart = new Cart();
-            foreach (var c in CART)
+            if(session != null)
             {
-                cart = c;
+                var CART = from c in dbContext.Carts
+                           where c.User.Id == session.User.Id
+                           select c;
+                Cart cart = new Cart();
+                foreach (var c in CART)
+                {
+                    cart = c;
+                }
+                ViewData["cart"] = cart;
+                ViewData["DataBase"] = dbContext;
+
+                //calculate the total price in cart
+                float price = (float)Math.Round(CalculatePrice(cart), 1);
+                ViewData["price"] = price;
+
+                int cartitemqty = 0;
+
+                foreach (CartItemCategory cc in cart.CartItemCategories)
+                {
+                    cartitemqty += cc.NumberOfItem;
+                }
+
+                string cartitemqtystring = cartitemqty.ToString();
+                Response.Cookies.Append("cartitemqty", cartitemqtystring);
             }
-            ViewData["cart"] = cart;
-            ViewData["DataBase"] = dbContext;
 
-            //calculate the total price in cart
-            float price = (float)Math.Round(CalculatePrice(cart), 1);
-            ViewData["price"] = price;
+            VisitorSession visitor = GetVisitorSession();
 
-            int cartitemqty = 0;
-
-            foreach (CartItemCategory cc in cart.CartItemCategories)
+            if(session == null && visitor != null)
             {
-                cartitemqty += cc.NumberOfItem;
-            }
 
-            string cartitemqtystring = cartitemqty.ToString();
-            Response.Cookies.Append("cartitemqty", cartitemqtystring);
+            }
+            
 
             return View();
         }
@@ -225,6 +236,21 @@ namespace ShoppingCart.Controllers
             Guid sessionId = Guid.Parse(Request.Cookies["SessionId"]);
 
             Session session = dbContext.Sessions.FirstOrDefault(x =>
+                x.Id == sessionId);
+
+            return session;
+        }
+
+        private Session GetVisitorSession()
+        {
+            if (Request.Cookies["VisitorSessionId"] == null)
+            {
+                return null;
+            }
+
+            Guid sessionId = Guid.Parse(Request.Cookies["VisitorSessionId"]);
+
+            VisitorSession session = dbContext.Sessions.FirstOrDefault(x =>
                 x.Id == sessionId);
 
             return session;
