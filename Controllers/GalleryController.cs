@@ -28,8 +28,10 @@ namespace ShoppingCart.Controllers
                     User = user
                 };
                 dbContext.VisitorSessions.Add(visitor1);
+
+                Response.Cookies.Append("VisitorSessionId", visitor1.User.Id.ToString());
+
                 //dbContext.SaveChanges();
-                Response.Cookies.Append("VisitorSessionId", visitor1.Id.ToString());
             }
 
 

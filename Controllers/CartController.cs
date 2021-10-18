@@ -52,18 +52,17 @@ namespace ShoppingCart.Controllers
                 Response.Cookies.Append("cartitemqty", cartitemqtystring);
             }
 
-            VisitorSession visitor = GetVisitorSession();
+            VisitorSession visitor = GetVisitorSession(); //VIEWING CART
 
             if(session == null && visitor != null)
             {
-                var CART = from c in dbContext.Carts
-                           where c.User.Id == visitor.Id
+                var CART = from c in dbContext.Carts //Find Cart
+                           where c.User.Id == visitor.User.Id
                            select c;
-                Cart cart = new Cart();
-                foreach (var c in CART)
-                {
-                    cart = c;
-                }
+
+
+                    Cart cart = new Cart();
+                
                 ViewData["cart"] = cart;
                 ViewData["DataBase"] = dbContext;
 
@@ -88,45 +87,84 @@ namespace ShoppingCart.Controllers
         public IActionResult AddToCart([FromBody] ItemToCart items)
         {
             Session session = GetSession();
-            if (session == null)
+            if (session != null)
             {
-                return Json(new { status = "fail" });
-            }
+                Cart cart = dbContext.Carts.FirstOrDefault(x => x.User.Id == session.User.Id);
+                Guid Itemid = Guid.Parse(items.ItemId);
 
-            Cart cart = dbContext.Carts.FirstOrDefault(x => x.User.Id == session.User.Id);
-            Guid Itemid = Guid.Parse(items.ItemId);
-
-            CartItemCategory cartitems = dbContext.CartItemCategories.FirstOrDefault(x => x.Item.Id == Itemid);
-            if (cartitems != null)
-            {
-                cartitems.NumberOfItem += 1;
-            }
-
-            else
-            {
-                Item item = dbContext.Items.FirstOrDefault(x => x.Id == Itemid);
-                CartItemCategory cartitemcategory = new CartItemCategory
+                CartItemCategory cartitems = dbContext.CartItemCategories.FirstOrDefault(x => x.Item.Id == Itemid);
+                if (cartitems != null)
                 {
-                    NumberOfItem = 1,
-                    Item = item,
-                    Cart = cart
-                };
-                dbContext.CartItemCategories.Add(cartitemcategory);
-                cart.CartItemCategories.Add(cartitemcategory);
+                    cartitems.NumberOfItem += 1;
+                }
+
+                else
+                {
+                    Item item = dbContext.Items.FirstOrDefault(x => x.Id == Itemid);
+                    CartItemCategory cartitemcategory = new CartItemCategory
+                    {
+                        NumberOfItem = 1,
+                        Item = item,
+                        Cart = cart
+                    };
+                    dbContext.CartItemCategories.Add(cartitemcategory);
+                    cart.CartItemCategories.Add(cartitemcategory);
 
 
+                }
+                dbContext.SaveChanges();
+
+                int cartitemqty = 0;
+
+                foreach (CartItemCategory cc in cart.CartItemCategories)
+                {
+                    cartitemqty += cc.NumberOfItem;
+                }
+
+                string cartitemqtystring = cartitemqty.ToString();
+                Response.Cookies.Append("cartitemqty", cartitemqtystring);
             }
-            dbContext.SaveChanges();
 
-            int cartitemqty = 0;
+            VisitorSession visitor = GetVisitorSession(); 
 
-            foreach (CartItemCategory cc in cart.CartItemCategories)
+            if (session == null && visitor != null)
             {
-                cartitemqty += cc.NumberOfItem;
+                Cart cart = dbContext.Carts.FirstOrDefault(x => x.User.Id == visitor.User.Id);
+                Guid Itemid = Guid.Parse(items.ItemId);
+
+                CartItemCategory cartitems = dbContext.CartItemCategories.FirstOrDefault(x => x.Item.Id == Itemid);
+                if (cartitems != null)
+                {
+                    cartitems.NumberOfItem += 1;
+                }
+
+                else
+                {
+                    Item item = dbContext.Items.FirstOrDefault(x => x.Id == Itemid);
+                    CartItemCategory cartitemcategory = new CartItemCategory
+                    {
+                        NumberOfItem = 1,
+                        Item = item,
+                        Cart = cart
+                    };
+                    dbContext.CartItemCategories.Add(cartitemcategory);
+                    cart.CartItemCategories.Add(cartitemcategory);
+
+
+                }
+                dbContext.SaveChanges();
+
+                int cartitemqty = 0;
+
+                foreach (CartItemCategory cc in cart.CartItemCategories)
+                {
+                    cartitemqty += cc.NumberOfItem;
+                }
+
+                string cartitemqtystring = cartitemqty.ToString();
+                Response.Cookies.Append("cartitemqty", cartitemqtystring);
             }
 
-            string cartitemqtystring = cartitemqty.ToString();
-            Response.Cookies.Append("cartitemqty", cartitemqtystring);
 
             return Json(new { status = "success" });
         }
@@ -200,37 +238,76 @@ namespace ShoppingCart.Controllers
         public IActionResult AdjustNum(string bookname, int quantity, int flag)
         {
             Session session = GetSession();
-            if (session == null)
-                return RedirectToAction("Index", "Logout");
-            // retrieve the repective cart and cart-item-category
-            Cart cart = dbContext.Carts.FirstOrDefault(x => x.User.Id == session.User.Id);
-            CartItemCategory cc = dbContext.CartItemCategories.FirstOrDefault(x => x.Cart.Id == cart.Id && x.Item.Name == bookname.Trim());
-            
-            // ADD case, indicated by flag==1
-            if (flag == 1)
+            if (session != null)
             {
-                cc.NumberOfItem++;
-                dbContext.SaveChanges();
+                // retrieve the repective cart and cart-item-category
+                Cart cart = dbContext.Carts.FirstOrDefault(x => x.User.Id == session.User.Id);
+                CartItemCategory cc = dbContext.CartItemCategories.FirstOrDefault(x => x.Cart.Id == cart.Id && x.Item.Name == bookname.Trim());
+
+                // ADD case, indicated by flag==1
+                if (flag == 1)
+                {
+                    cc.NumberOfItem++;
+                    dbContext.SaveChanges();
+
+                }
+                // MINUS case, indicated by flag!=1
+                else
+                {
+                    cc.NumberOfItem--;
+                    if (cc.NumberOfItem <= 0)
+                        dbContext.Remove(cc);
+                    dbContext.SaveChanges();
+                }
+
+                int cartitemqty = 0;
+
+                foreach (CartItemCategory cc2 in cart.CartItemCategories)
+                {
+                    cartitemqty += cc2.NumberOfItem;
+                }
+
+                string cartitemqtystring = cartitemqty.ToString();
+                Response.Cookies.Append("cartitemqty", cartitemqtystring);
 
             }
-            // MINUS case, indicated by flag!=1
-            else
+
+
+            VisitorSession visitor = GetVisitorSession();
+
+            if (session == null && visitor != null)
             {
-                cc.NumberOfItem--;
-                if (cc.NumberOfItem <= 0)
-                    dbContext.Remove(cc);
-                dbContext.SaveChanges();
+                Cart cart = dbContext.Carts.FirstOrDefault(x => x.User.Id == visitor.User.Id);
+                CartItemCategory cc = dbContext.CartItemCategories.FirstOrDefault(x => x.Cart.Id == cart.Id && x.Item.Name == bookname.Trim());
+
+                // ADD case, indicated by flag==1
+                if (flag == 1)
+                {
+                    cc.NumberOfItem++;
+                    dbContext.SaveChanges();
+
+                }
+                // MINUS case, indicated by flag!=1
+                else
+                {
+                    cc.NumberOfItem--;
+                    if (cc.NumberOfItem <= 0)
+                        dbContext.Remove(cc);
+                    dbContext.SaveChanges();
+                }
+
+                int cartitemqty = 0;
+
+                foreach (CartItemCategory cc2 in cart.CartItemCategories)
+                {
+                    cartitemqty += cc2.NumberOfItem;
+                }
+
+                string cartitemqtystring = cartitemqty.ToString();
+                Response.Cookies.Append("cartitemqty", cartitemqtystring);
+
             }
 
-            int cartitemqty = 0;
-
-            foreach (CartItemCategory cc2 in cart.CartItemCategories)
-            {
-                cartitemqty += cc2.NumberOfItem;
-            }
-
-            string cartitemqtystring = cartitemqty.ToString();
-            Response.Cookies.Append("cartitemqty", cartitemqtystring);
 
             return RedirectToAction("ViewCart", "Cart");
         }
