@@ -21,10 +21,8 @@ namespace ShoppingCart.Controllers
             Session session = GetSession();
             if (session == null)
             {
-                Session session1 = new Session()
-                {
+                Session session1 = new Session();
 
-                };
 
                 dbContext.Sessions.Add(session1);
                 dbContext.SaveChanges();
