@@ -25,7 +25,7 @@ namespace ShoppingCart.Controllers
 
             //find the cart associated to the user
             var CART = from c in dbContext.Carts
-                       where c.Sessions.Id == session.Id
+                       where c.User.Id == session.User.Id
                        select c;
             Cart cart = new Cart();
             foreach (var c in CART)

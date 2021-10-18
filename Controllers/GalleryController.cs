@@ -19,17 +19,20 @@ namespace ShoppingCart.Controllers
         public IActionResult AllProducts()
         {
             Session session = GetSession();
-            if (session == null)
+
+            if(session == null)
             {
-                Session session1 = new Session();
+                VisitorSession session1 = new VisitorSession()
+                {
 
-
-                dbContext.Sessions.Add(session1);
+                };
+                dbContext.VisitorSessions.Add(session1);
                 dbContext.SaveChanges();
-                Response.Cookies.Append("SessionId", session1.Id.ToString());
+                Response.Cookies.Append("VisitorSessionId", session1.Id.ToString());
             }
 
-            List<ShoppingCart.Models.Item> items = dbContext.Items.ToList();
+
+        List<ShoppingCart.Models.Item> items = dbContext.Items.ToList();
             Dictionary<Guid, double> AvgItemScore = new Dictionary<Guid, double>();
             foreach (var itemID in items.Select(x => x.Id))
             {

@@ -17,6 +17,8 @@ namespace ShoppingCart.Models
         public DbSet<Item> Items { get; set; }
         public DbSet<Session> Sessions { get; set; }
 
+        public DbSet<VisitorSession> VisitorSessions { get; set; }
+
         public DbSet<User> Users { get; set; }
 
         public DbSet<Purchase> Purchases { get; set; }
