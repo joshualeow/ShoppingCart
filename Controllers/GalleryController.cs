@@ -19,10 +19,10 @@ namespace ShoppingCart.Controllers
         public IActionResult AllProducts()
         {
             Session session = GetSession();
-            //if (session == null)
-            //{
-            //    return RedirectToAction("Index", "Logout");
-            //}
+            if (session == null)
+            {
+                return RedirectToAction("Index", "Logout");
+            }
 
             List<ShoppingCart.Models.Item> items = dbContext.Items.ToList();
             Dictionary<Guid, double> AvgItemScore = new Dictionary<Guid, double>();
