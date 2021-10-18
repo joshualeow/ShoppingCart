@@ -16,12 +16,6 @@ namespace ShoppingCart.Models
         [Key]
         public Guid Id { get; set; }
 
-        [Required]
-        public string Username { get; set; }
-
-        [Required]
-        public byte[] PassHash { get; set; }
-
         public virtual ICollection<Purchase> Purchases { get; set; }
     }
 }
