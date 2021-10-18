@@ -56,7 +56,30 @@ namespace ShoppingCart.Controllers
 
             if(session == null && visitor != null)
             {
+                var CART = from c in dbContext.Carts
+                           where c.User.Id == visitor.Id
+                           select c;
+                Cart cart = new Cart();
+                foreach (var c in CART)
+                {
+                    cart = c;
+                }
+                ViewData["cart"] = cart;
+                ViewData["DataBase"] = dbContext;
 
+                //calculate the total price in cart
+                float price = (float)Math.Round(CalculatePrice(cart), 1);
+                ViewData["price"] = price;
+
+                int cartitemqty = 0;
+
+                foreach (CartItemCategory cc in cart.CartItemCategories)
+                {
+                    cartitemqty += cc.NumberOfItem;
+                }
+
+                string cartitemqtystring = cartitemqty.ToString();
+                Response.Cookies.Append("cartitemqty", cartitemqtystring);
             }
             
 
