@@ -11,7 +11,6 @@ namespace ShoppingCart.Models
         public PurchasedItem()
         {
             Id = new Guid();
-            ActivationKey = Guid.NewGuid().ToString();
         }
         [Key]
         public Guid Id { get; set; }
